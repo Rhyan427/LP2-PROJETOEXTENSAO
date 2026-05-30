@@ -1,46 +1,62 @@
 package service;
 
-import entity.Coordenador;
-import java.util.ArrayList;
-import java.util.Objects;
+import dataTransfer.CoordData;
+import dataTransfer.OportData;
+import entity.*;
 
-public class CoordenadorService {
-    ArrayList<Coordenador> coordenadores = new ArrayList<>();
-    private CertificadoService certificadoService = new CertificadoService();
+public class CoordenadorService implements IntOportunidade {
+    OportunidadeService oportunidadeService = new OportunidadeService();
 
-    public boolean criarCoordenador(String nome, String email, String senha, String siape, String departamento) {
-        if (!coordenadorExiste(nome, email, siape)) {
-            Coordenador coordenador = new Coordenador(nome, email, senha, siape, departamento);
-            coordenadores.add(coordenador);
+    public Coordenador criarCoordenador(CoordData data) {
+        Coordenador novo = new Coordenador(data.getNome(),
+                data.getEmail(),
+                data.getSenha(),
+                data.getSiape(),
+                data.getDepartamento());
+        return novo;
+    }
+
+    @Override
+    public Oportunidade criarOportunidade(Usuario u, Docente d, OportData data) {
+        data.setAutor(u);
+        data.setResponsavel(d);
+        return oportunidadeService.criarOportunidade(data);
+    }
+
+    @Override
+    public boolean publicar(Oportunidade op, Usuario u, StatusOportunidade status) {
+        if (op == null || u == null) return false;
+        if (op.getStatus() == StatusOportunidade.RASCUNHO || op.getStatus() == StatusOportunidade.AGUARDANDO_APROVACAO) {
+            op.setStatus(status);
             return true;
         }
         return false;
     }
-    public boolean coordenadorExiste(String nome, String email, String siape) {
-        for (Coordenador coo : coordenadores) {
-            if ((Objects.equals(coo.getNome(), nome) == true) || (Objects.equals(coo.getEmail(), email) == true) || (Objects.equals(coo.getSiape(), siape) == true)) {
-                return true;
-            }
+
+    @Override
+    public boolean fecharInscricoes(Oportunidade op, Usuario u) {
+        if (op == null || u == null) return false;
+        if (op.getStatus() == StatusOportunidade.PUBLICADA) {
+            op.setStatus(StatusOportunidade.EM_PROGRESSO);
+            return true;
         }
         return false;
     }
 
-    public boolean loginCoordenador(Coordenador in, String nome, String senha) {
-        for (Coordenador coo : coordenadores) {
-            if ((Objects.equals(coo.getNome(), nome) == true) && (Objects.equals(coo.getSenha(), senha) == true)) {
-                repasseDadosLogin(in, coo);
-                return true;
-            }
+    @Override
+    public boolean encerrarOportunidade(Oportunidade op, Usuario u) {
+        if (op == null || u == null) return false;
+        if (op.getStatus() == StatusOportunidade.EM_PROGRESSO) {
+            op.setStatus(StatusOportunidade.ENCERRADA);
+            return true;
         }
         return false;
     }
-    public void repasseDadosLogin(Coordenador in, Coordenador coo) {
-        in.setNome(coo.getNome());
-        in.setEmail(coo.getEmail());
-        in.setSenha(coo.getSenha());
-        in.setAtivo(coo.isAtivo());
-        in.setPapel(coo.getPapel());
-        in.setSiape(coo.getSiape());
-        in.setDepartamento(coo.getDepartamento());
+
+    @Override
+    public boolean editarPlano(Oportunidade op, Usuario u, String novoPlano) {
+        if (op == null || u == null) return false;
+        op.setPlano(novoPlano);
+        return true;
     }
 }

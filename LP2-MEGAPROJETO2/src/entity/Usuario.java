@@ -1,11 +1,13 @@
 package entity;
 
-public class Usuario {
-    private String nome;
-    private String email;
-    private String senha;
-    private boolean ativo;
-    private Papel papel;
+import java.util.Objects;
+
+public abstract class Usuario {
+    protected String nome;
+    protected String email;
+    protected String senha;
+    protected boolean ativo;
+    protected Papel papel;
 
     public String getNome() {
         return nome;
@@ -45,5 +47,25 @@ public class Usuario {
         this.papel = papel;
         this.ativo = true;
     }
-    public Usuario() {} //construtor vazio para login
+
+    public Usuario() {}
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return ativo == usuario.ativo && Objects.equals(nome, usuario.nome) && Objects.equals(email, usuario.email) && Objects.equals(senha, usuario.senha) && Objects.equals(papel, usuario.papel);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, email, senha, ativo, papel);
+    }
+
+    public void anonimizar(){
+        this.nome = "Usuario anonimizado";
+        this.email = "anonimo_ " + System.currentTimeMillis() + "@instituicao.edu.br";
+        this.senha =  "*****";
+        this.ativo = false;
+    }
 }

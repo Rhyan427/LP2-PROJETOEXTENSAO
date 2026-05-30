@@ -1,8 +1,8 @@
-import view.Front;
+import service.ZMenuPrincipal;
 
 public class Main {
     public static void main(String[] args) {
-        Front view = new Front();
-        view.extensao();
+        ZMenuPrincipal menu = new ZMenuPrincipal();
+        menu.extensao();
     }
 }

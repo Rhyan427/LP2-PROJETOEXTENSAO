@@ -23,5 +23,17 @@ public class Docente extends Usuario {
         this.departamento = departamento;
     }
 
+    public Docente(String nome, String email, String senha, Papel papel, String siape, String departamento) {
+        super(nome, email, senha, papel);
+        this.siape = siape;
+        this.departamento = departamento;
+    } //construtor para coordenador
+
     public Docente() {} //construtor vazio para login
+
+    @Override
+    public void anonimizar(){
+        super.anonimizar();
+        this.siape = "Anonimo -" + System.currentTimeMillis();
+    }
 }

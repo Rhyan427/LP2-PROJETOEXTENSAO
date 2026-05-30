@@ -1,50 +1,70 @@
 package service;
 
+import dataTransfer.AprovtData;
 import entity.Aproveitamento;
-import entity.Certificado;
-import entity.Discente;
 import entity.StatusAproveitamento;
+import entity.Discente;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
 
 public class AproveitamentoService {
-    ArrayList<Aproveitamento> lista = new ArrayList<>();
 
-    public boolean uploadCertificado() {
-        return false;
-    } //TODO: fase 3
-
-    public boolean criarAproveitamento(Discente di, Certificado cert) {
-        if (di != null || cert != null) {
-            Aproveitamento aproveitamento = new Aproveitamento(di, cert.getUuidHash(), cert.getOportunidade().getCargaHoraria(), StatusAproveitamento.PENDENTE);
-            lista.add(aproveitamento);
-            return true;
-        }
-        return false;
+    public Aproveitamento criarAproveitamento(AprovtData data) {
+        Aproveitamento novo = new Aproveitamento(
+                data.getDiscente(),
+                data.getDescricao(),
+                data.getHoras(),
+                StatusAproveitamento.PENDENTE,
+                data.getCertificado());
+        return novo;
     }
 
-    public void verAproveitamento() {
-        for (Aproveitamento a : lista) {
-            System.out.printf("- Aproveitamento %s, por %s. Status: %s\n", a.getDescricao(), a.getDiscente().getNome(), a.getStatus());
-        }
-    }
-
-    public void verAproveitamentoPorDiscente(Discente di) {
-        for (Aproveitamento a : lista) {
-            if (Objects.equals(a.getDiscente(), di) == true) {
-                System.out.printf("- Aproveitamento %s. Status: %s\n", a.getDescricao(), a.getStatus());
+    public int calcularHorasAprovadas(Discente discente, List<Aproveitamento> todosAproveitamentos) {
+        int horas = 0;
+        for (Aproveitamento aprov : todosAproveitamentos) {
+            if (aprov.getDiscente().getMatricula().equals(discente.getMatricula())) {
+                if (aprov.getStatus() == StatusAproveitamento.APROVADO) {
+                    horas += aprov.getHoras();
+                }
             }
         }
+        return horas;
     }
 
-    public boolean editarAproveitamento(String nome, String id, StatusAproveitamento status) {
-        for (Aproveitamento a : lista) {
-            if (Objects.equals(a.getDiscente().getNome(), nome) == true && Objects.equals(a.getDescricao(), id) == true) {
-                a.setStatus(status);
-                return true;
-            }
+    // RF022 — coordenador indefere: registra motivo e abre prazo de 5 dias para reenvio
+    public boolean indeferir(Aproveitamento aprov, String motivo) {
+        if (aprov == null) return false;
+        if (aprov.getStatus() != StatusAproveitamento.PENDENTE) {
+            System.out.println("Apenas solicitações PENDENTES podem ser indeferidas.");
+            return false;
         }
-        return false;
+        if (LocalDate.now().isAfter(aprov.getDataLimiteDecisao())) {
+            System.out.println("AVISO: O prazo de 10 dias para decisão foi ultrapassado.");
+        }
+        aprov.setStatus(StatusAproveitamento.INDEFERIDO);
+        aprov.setMotivo_rejeicao(motivo);
+        aprov.setDataLimiteReenvio(LocalDate.now().plusDays(5)); // RF022
+        return true;
+    }
+
+    // RF023 — discente reenvia solicitação indeferida dentro do prazo de 5 dias
+    public boolean reenviar(Aproveitamento aprov, String novaDescricao, int novasHoras) {
+        if (aprov == null) return false;
+        if (aprov.getStatus() != StatusAproveitamento.INDEFERIDO) {
+            System.out.println("Esta solicitação não está indeferida.");
+            return false;
+        }
+        if (aprov.getDataLimiteReenvio() == null || LocalDate.now().isAfter(aprov.getDataLimiteReenvio())) {
+            System.out.println("O prazo de 5 dias para reenvio foi ultrapassado.");
+            return false;
+        }
+        aprov.setDescricao(novaDescricao);
+        aprov.setHoras(novasHoras);
+        aprov.setStatus(StatusAproveitamento.PENDENTE);
+        aprov.setMotivo_rejeicao("N/A");
+        aprov.setDataLimiteReenvio(null);
+        return true;
     }
 }

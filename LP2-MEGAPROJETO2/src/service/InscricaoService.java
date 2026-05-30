@@ -1,6 +1,7 @@
 package service;
 
 import entity.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -16,7 +17,7 @@ public class InscricaoService {
 
     public void verInscricoesPorDiscente(Discente di) {
         for (Inscricao ins : inscricoes) {
-            if (Objects.equals(ins.getDiscente(), di) == true) {
+            if (Objects.equals(ins.getDiscente(), di)) {
                 System.out.printf("- %s %s. Status: %s\n", ins.getOportunidade().getTipo(), ins.getOportunidade().getTitulo(), ins.getStatus());
             }
         }
@@ -30,19 +31,20 @@ public class InscricaoService {
         }
     }
 
-    public boolean fazerInscricao(Discente di, Oportunidade oportunidade) {
+    public Inscricao fazerInscricao(Discente di, Oportunidade oportunidade) {
         if (!inscricaoExiste(di, oportunidade) && oportunidade.getStatus() == StatusOportunidade.PUBLICADA) {
             Inscricao inscricao = new Inscricao(di, oportunidade, StatusInscricao.PENDENTE, LocalDate.now());
             inscricoes.add(inscricao);
-            return true;
+
+            return inscricao;
         }
         else {
-            return false;
+            return null;
         }
     }
     public boolean inscricaoExiste(Discente di, Oportunidade oportunidade) {
         for (Inscricao ins : inscricoes) {
-            if ((Objects.equals(ins.getDiscente(), di) == true) && (Objects.equals(ins.getOportunidade(), oportunidade) == true)) {
+            if ((Objects.equals(ins.getDiscente(), di)) && (Objects.equals(ins.getOportunidade(), oportunidade))) {
                 return true;
             }
         }
@@ -51,7 +53,7 @@ public class InscricaoService {
 
     public boolean analisarInscricao(String tituloOp, String nomeDi, StatusInscricao status) {
         for (Inscricao ins : inscricoes) {
-            if ((Objects.equals(ins.getDiscente().getNome(), nomeDi) == true) && (Objects.equals(ins.getOportunidade().getTitulo(), tituloOp) == true)) {
+            if ((Objects.equals(ins.getDiscente().getNome(), nomeDi)) && (Objects.equals(ins.getOportunidade().getTitulo(), tituloOp))) {
                 ins.setStatus(status);
                 return true;
             }
@@ -61,7 +63,7 @@ public class InscricaoService {
 
     public boolean cancelarInscricao(Discente di, String titulo) {
         for (Inscricao ins : inscricoes) {
-            if (Objects.equals(ins.getDiscente(), di) == true && Objects.equals(ins.getOportunidade().getTitulo(), titulo) == true) {
+            if (Objects.equals(ins.getDiscente(), di) && Objects.equals(ins.getOportunidade().getTitulo(), titulo)) {
                 if (ins.getOportunidade().getStatus() == StatusOportunidade.PUBLICADA && (ins.getStatus() == StatusInscricao.APROVADO || ins.getStatus() == StatusInscricao.PENDENTE)) {
                     ins.setStatus(StatusInscricao.CANCELADO);
                     return true;
@@ -71,13 +73,33 @@ public class InscricaoService {
         return false;
     }
 
-    public ArrayList<Inscricao> pegarInscricoesPorOportunidade(Oportunidade op) {
-        ArrayList<Inscricao> recuperadas = new ArrayList<>();
+    public boolean substituirParticipante(Oportunidade op, Discente in, Discente out, String justificativa  ){
+
+        Inscricao inscricaoSaindo = null;
+        Inscricao inscricaoEntrando = null;
+
+
         for (Inscricao ins : inscricoes) {
             if (Objects.equals(ins.getOportunidade(), op)) {
-                recuperadas.add(ins);
+                if (Objects.equals(ins.getDiscente(), in)) {
+                    inscricaoSaindo = ins;
+                } else if (Objects.equals(ins.getDiscente(), in)) {
+                    inscricaoEntrando = ins;
+                }
             }
         }
-        return recuperadas;
+
+        if (inscricaoSaindo != null && inscricaoEntrando != null) {
+            if (inscricaoSaindo.getStatus() == StatusInscricao.APROVADO && inscricaoEntrando.getStatus() == StatusInscricao.PENDENTE) {
+
+                inscricaoSaindo.setStatus(StatusInscricao.CANCELADO);
+                inscricaoSaindo.setJustificativa(justificativa);
+
+                inscricaoEntrando.setStatus(StatusInscricao.APROVADO);
+
+                return true;
+            }
+        }
+        return false;
     }
 }

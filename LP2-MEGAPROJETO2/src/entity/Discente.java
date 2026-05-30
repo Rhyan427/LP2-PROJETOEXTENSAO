@@ -5,6 +5,7 @@ public class Discente extends Usuario {
     private int semestre;
     private Curso curso;
 
+
     public String getMatricula() {
         return matricula;
     }
@@ -30,5 +31,12 @@ public class Discente extends Usuario {
         this.semestre = semestre;
         this.curso = curso;
     }
+
     public Discente() {} //construtor vazio para login
+
+    @Override
+    public void anonimizar(){
+        super.anonimizar();
+        this.matricula = "ANONIMO-" + System.currentTimeMillis();
+    }
 }

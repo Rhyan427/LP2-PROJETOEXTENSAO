@@ -1,9 +1,10 @@
 package service;
 
 import entity.Aviso;
-import entity.DiscenteDiretor;
+import entity.Diretor;
 import entity.Docente;
 import entity.Usuario;
+
 import java.util.ArrayList;
 
 public class AvisoService {
@@ -19,7 +20,7 @@ public class AvisoService {
             return false;
         }
 
-        if (autor instanceof Docente || autor instanceof DiscenteDiretor) {
+        if (autor instanceof Docente || autor instanceof Diretor) {
             Aviso novo = new Aviso(titulo, mensagem, autor);
             avisos.add(novo);
             System.out.println("Aviso publicado por " + autor.getNome()); //TODO: mover para Front

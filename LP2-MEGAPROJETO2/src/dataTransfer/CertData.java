@@ -1,10 +1,12 @@
-package entity;
+package dataTransfer;
 
+import entity.Discente;
+import entity.Oportunidade;
+import entity.StatusAssinatura;
 import java.time.LocalDate;
-import java.util.UUID;
 
-public class Certificado {
-    private final String uuidHash;
+public class CertData {
+    private String uuidHash;
     private Discente discente;
     private Oportunidade oportunidade;
     private LocalDate dataEmissao;
@@ -52,13 +54,22 @@ public class Certificado {
         this.statusAssinatura = statusAssinatura;
     }
 
-    public Certificado(Discente discente, Oportunidade oportunidade, int horas, String certificadoPath) {
-        this.uuidHash = UUID.randomUUID().toString();
+    public CertData(String uuidHash, Discente discente, Oportunidade oportunidade, LocalDate dataEmissao, int horas, String certificadoPath, StatusAssinatura statusAssinatura) {
+        this.uuidHash = uuidHash;
         this.discente = discente;
         this.oportunidade = oportunidade;
-        this.dataEmissao = LocalDate.now();
+        this.dataEmissao = dataEmissao;
         this.horas = horas;
         this.certificadoPath = certificadoPath;
-        this.statusAssinatura = StatusAssinatura.PENDENTE;
+        this.statusAssinatura = statusAssinatura;
     }
+
+    public CertData(Discente discente, Oportunidade oportunidade, int horas, String certificadoPath) {
+        this.discente = discente;
+        this.oportunidade = oportunidade;
+        this.horas = horas;
+        this.certificadoPath = certificadoPath;
+    }
+
+    public CertData() {}
 }

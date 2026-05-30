@@ -1,54 +1,33 @@
 package service;
 
-import entity.Papel;
 import entity.Usuario;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class UsuarioService {
-    ArrayList<Usuario> usuarios = new ArrayList<>();
-    OportunidadeService oportunidadeService = new OportunidadeService();
 
-    public boolean usuarioExiste(String nome, String email) {
-        for (Usuario u : usuarios) {
-            if ((Objects.equals(u.getEmail(), email) == true) || (Objects.equals(u.getNome(), nome) == true)) {
-                return true;
+    public void desativarConta(Usuario usuario){
+        if(usuario != null){
+            usuario.setAtivo(false);
+        }
+    }
+
+    //TODO preservacao de do histórico para fins de auditoria faltando
+    public void anonimizarConta(Usuario usuario){
+        if(usuario != null){
+            usuario.anonimizar();
+        }
+    }
+
+    public Usuario autenticar(String email, String senha, ArrayList<Usuario> usuarios){
+        for(Usuario u: usuarios){
+            if(u.getEmail().equalsIgnoreCase(email) && u.getSenha().equals(senha)){
+                if(!u.isAtivo()){
+                    System.out.println("\n[BLOQUEADO] Esta conta esta desativada ou foi anonimizada");
+                    return null;
+                }
+                return u;
             }
         }
-        return false;
-    }
-
-    public boolean criarConta(String nome, String email, String senha) {
-        if (!usuarioExiste(nome, email)) {
-            Usuario novo = new Usuario(nome, email, senha, new Papel("Visitante"));
-            usuarios.add(novo);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean loginUsuario(Usuario in, String nome, String senha) {
-        for (Usuario u : usuarios) {
-            if ((Objects.equals(u.getNome(), nome) == true) && (Objects.equals(u.getSenha(), senha) == true)) {
-                repasseDadosLogin(in, u);
-                return true;
-            }
-        }
-        return false;
-    }
-    public void repasseDadosLogin(Usuario in, Usuario u) {
-        in.setNome(u.getNome());
-        in.setEmail(u.getEmail());
-        in.setSenha(u.getSenha());
-        in.setAtivo(u.isAtivo());
-        in.setPapel(u.getPapel());
-    }
-
-    public boolean trocarSenha(Usuario u, String senha) {
-        if (Objects.equals(u.getSenha(), senha) == false) {
-            u.setSenha(senha);
-            return true;
-        }
-        return false;
+        return null;
     }
 }

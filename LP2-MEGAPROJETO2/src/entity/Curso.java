@@ -6,9 +6,9 @@ public class Curso {
     private String nome;
     private int codigo;
     private int cargaHoraria;
-    private String ppcVersao;
+    private PPC ppcAtual;
     private ArrayList<Discente> alunos;
-
+    private ArrayList<PPC> historico;
 
     public String getNome() {
         return nome;
@@ -28,11 +28,11 @@ public class Curso {
     public void setCargaHoraria(int cargaHoraria) {
         this.cargaHoraria = cargaHoraria;
     }
-    public String getPpcVersao() {
-        return ppcVersao;
+    public PPC getPpcAtual() {
+        return ppcAtual;
     }
-    public void setPpcVersao(String ppcVersao) {
-        this.ppcVersao = ppcVersao;
+    public void setPpcAtual(PPC ppcAtual) {
+        this.ppcAtual = ppcAtual;
     }
     public ArrayList<Discente> getAlunos() {
         return alunos;
@@ -40,12 +40,19 @@ public class Curso {
     public void setAlunos(ArrayList<Discente> alunos) {
         this.alunos = alunos;
     }
+    public ArrayList<PPC> getHistorico() {
+        return historico;
+    }
+    public void setHistorico(ArrayList<PPC> historico) {
+        this.historico = historico;
+    }
 
-    public Curso(String nome, int codigo, int cargaHoraria, String ppcVersao) {
+    public Curso(String nome, int codigo, int cargaHoraria, PPC ppcAtual) {
         this.nome = nome;
         this.codigo = codigo;
         this.cargaHoraria = cargaHoraria;
-        this.ppcVersao = ppcVersao;
+        this.ppcAtual = ppcAtual;
         this.alunos = new ArrayList<>();
+        this.historico = new ArrayList<>();
     }
 }

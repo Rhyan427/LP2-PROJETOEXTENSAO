@@ -2,7 +2,7 @@ package entity;
 
 import java.time.LocalDate;
 
-public class DiscenteDiretor extends Discente {
+public class Diretor extends Discente {
     private Grupo grupo;
     private String cargo;
     private LocalDate dataInicio;
@@ -33,7 +33,7 @@ public class DiscenteDiretor extends Discente {
         this.dataFim = dataFim;
     }
 
-    public DiscenteDiretor(String nome, String email, String senha, String matricula, int semestre, Curso curso, Grupo grupo, String cargo, LocalDate dataInicio, LocalDate dataFim) {
+    public Diretor(String nome, String email, String senha, String matricula, int semestre, Curso curso, Grupo grupo, String cargo, LocalDate dataInicio, LocalDate dataFim) {
         super(nome, email, senha, matricula, semestre, curso);
         this.grupo = grupo;
         this.cargo = cargo;
@@ -42,5 +42,5 @@ public class DiscenteDiretor extends Discente {
         Papel papel = new Papel("Discente Diretor");
         super.setPapel(papel);
     }
-    public DiscenteDiretor() {} //construtor para login
+    public Diretor() {}
 }

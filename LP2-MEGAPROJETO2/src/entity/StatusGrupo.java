@@ -2,5 +2,7 @@ package entity;
 
 public enum StatusGrupo {
     ATIVO,
-    INATIVO
+    INATIVO,
+    PENDENTE,
+    REJEITADO
 }

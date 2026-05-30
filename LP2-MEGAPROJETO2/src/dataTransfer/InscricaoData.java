@@ -1,13 +1,16 @@
-package entity;
+package dataTransfer;
+
+import entity.Discente;
+import entity.Oportunidade;
+import entity.StatusInscricao;
 
 import java.time.LocalDate;
 
-public class Inscricao {
+public class InscricaoData {
     private Discente discente;
     private Oportunidade oportunidade;
     private StatusInscricao status;
     private LocalDate dataInscricao;
-    private String justificativa; // novo
 
     public Discente getDiscente() {
         return discente;
@@ -33,14 +36,20 @@ public class Inscricao {
     public void setDataInscricao(LocalDate dataInscricao) {
         this.dataInscricao = dataInscricao;
     }
-    public String getJustificativa() { return justificativa; }
-    public void setJustificativa(String justificativa) { this.justificativa = justificativa; }
 
-    public Inscricao(Discente discente, Oportunidade oportunidade, StatusInscricao status, LocalDate dataInscricao) {
+    public InscricaoData(Discente discente, Oportunidade oportunidade, StatusInscricao status, LocalDate dataInscricao) {
         this.discente = discente;
         this.oportunidade = oportunidade;
         this.status = status;
         this.dataInscricao = dataInscricao;
-        this.justificativa = "N/A";
     }
+
+    public InscricaoData(Discente discente, Oportunidade oportunidade, StatusInscricao status) {
+        this.discente = discente;
+        this.oportunidade = oportunidade;
+        this.status = status;
+    }
+
+    public InscricaoData() {}
+
 }
