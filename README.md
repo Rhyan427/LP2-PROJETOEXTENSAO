@@ -3,3 +3,4 @@ INFORMAÇÕES IMPORTANTES:
 - Discente pré inicializado com nome "dxz" e senha "dxz"
 - Docente pré inicializado com nome "doxz" e senha "doxz"
 - Coordenador pré inicializado com nome "cxz" e senha "cxz"
+- Curso pré inicializado com nome "Exemplo" e código "1234"
