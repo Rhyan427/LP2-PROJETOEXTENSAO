@@ -19,9 +19,9 @@ public class AdminView {
         System.out.println("1. Cadastrar docente");
         System.out.println("2. Cadastrar coordenador");
         System.out.println("3. Ver solicitacoes de grupo");
+        System.out.println("4. Desativar ou anonimizar contas");
         System.out.println("0. Sair");
-        System.out.print("Sua escolha: ");
-        int act = scan.nextInt();
+        int act = lerIntSeguro(scan, "Sua escolha: ");
         if (act == 0) {
             System.out.println("Saindo.\n");
         }
@@ -30,15 +30,15 @@ public class AdminView {
     public DocenteData criarDocenteData(DocenteData data) {
         scan.nextLine();
         System.out.print("Nome do docente: ");
-        data.setNome(scan.nextLine());
+        data.setNome(lerStringSegura(scan, ""));
         System.out.print("Email do docente: ");
-        data.setEmail(scan.nextLine());
+        data.setEmail(lerStringSegura(scan, ""));
         System.out.print("Senha de acesso do docente: ");
-        data.setSenha(scan.nextLine());
+        data.setSenha(lerStringSegura(scan, ""));
         System.out.print("Informe o SIAPE do docente: ");
-        data.setSiape(scan.nextLine());
+        data.setSiape(lerStringSegura(scan, ""));
         System.out.print("Informe o departamento do docente: ");
-        data.setDepartamento(scan.nextLine());
+        data.setDepartamento(lerStringSegura(scan, ""));
         return data;
     }
     public void criarDocenteResult(boolean result) {
@@ -49,15 +49,15 @@ public class AdminView {
     public CoordData criarCoordenadorData(CoordData data) {
         scan.nextLine();
         System.out.print("Nome do coordenador: ");
-        data.setNome(scan.nextLine());
+        data.setNome(lerStringSegura(scan, ""));
         System.out.print("Email do coordenador: ");
-        data.setEmail(scan.nextLine());
+        data.setEmail(lerStringSegura(scan, ""));
         System.out.print("Senha de acesso do coordenador: ");
-        data.setSenha(scan.nextLine());
+        data.setSenha(lerStringSegura(scan, ""));
         System.out.print("Informe o SIAPE do coordenador: ");
-        data.setSiape(scan.nextLine());
+        data.setSiape(lerStringSegura(scan, ""));
         System.out.print("Informe o departamento do coordenador: ");
-        data.setDepartamento(scan.nextLine());
+        data.setDepartamento(lerStringSegura(scan, ""));
         return data;
     }
 
@@ -69,7 +69,7 @@ public class AdminView {
     public void gerenciarVinculos(Scanner scanner, UsuarioService usuarioService, ArrayList<Usuario> ListaUsuarios){
         System.out.println("Gerenciar vinculos");
         System.out.print("Digite o email do usuario");
-        String emailBusca = scanner.nextLine();
+        String emailBusca = lerStringSegura(scanner, "");
 
         Usuario usuarioAlvo = null;
         for(Usuario u: ListaUsuarios){
@@ -89,8 +89,7 @@ public class AdminView {
         System.out.println("2. Anonimizar conta (apagar dados)");
         System.out.print("Escolha uma opcao: ");
 
-        int opcao = scanner.nextInt();
-        scanner.nextLine();
+        int opcao = lerIntSeguro(scanner, "");
 
         if(opcao == 1){
             usuarioService.desativarConta(usuarioAlvo);
@@ -99,17 +98,17 @@ public class AdminView {
             usuarioService.anonimizarConta(usuarioAlvo);
             System.out.println("Conta anonimizada com sucesso");
         } else {
-            System.out.println("Escolha uma opcao valida");
+            System.out.println("Escolha uma opção válida");
         }
     }
 
     public void avaliarSolicitacoesGrupo(Scanner scanner, GrupoService grupoService, HashMap<String, Grupo> mapaGrupos){
-        System.out.println("Avaliacao de solicitacao de grupos estudantis");
+        System.out.println("Avaliacao de solicitação de grupos estudantis");
 
         ArrayList<Grupo> pendentes = grupoService.listarGruposPendentes(mapaGrupos);
 
         if(pendentes.isEmpty()){
-            System.out.println("Nao existem solicitacoes pendentes no momento");
+            System.out.println("Nao existem solicitações pendentes no momento");
             return;
         }
 
@@ -119,7 +118,7 @@ public class AdminView {
         }
 
         System.out.println("Digite o numero do grupo que deseja avaliar (ou -1 para cancelar): ");
-        int escolha = scanner.nextInt();
+        int escolha = lerIntSeguro(scanner, "");
         scanner.nextLine();
 
         if(escolha >= 0 && escolha < pendentes.size()){
@@ -132,8 +131,7 @@ public class AdminView {
             System.out.println("\n1. Aprovar grupo");
             System.out.println("2. Rejeitar grupo");
             System.out.print("Sua decisao: ");
-            int decisao = scanner.nextInt();
-            scanner.nextLine();
+            int decisao = lerIntSeguro(scanner, "");
 
             if(decisao == 1){
                 grupoService.avaliarSolicitacao(grupoAlvo, true);
@@ -147,6 +145,34 @@ public class AdminView {
         } else if (escolha != -1){
             System.out.println("\nPosicao invalida");
         }
+    }
 
+    public int lerIntSeguro(Scanner scan, String mensagem){
+        while(true){
+            if(!mensagem.isBlank()) {
+                System.out.print(mensagem);
+            }
+
+            try {
+                return Integer.parseInt(scan.nextLine());
+            } catch (NumberFormatException e){
+                System.out.println("Entrada inválida! Digite um numero válido");
+            }
+        }
+    }
+
+    public String lerStringSegura(Scanner scan, String mensagem){
+        while(true){
+            if(!mensagem.isBlank()) {
+                System.out.println(mensagem);
+            }
+            String entrada = scan.nextLine();
+
+            if(entrada.isBlank()){
+                System.out.println("Entrada inválida! Este campo não pode ficar vazio");
+            } else {
+                return entrada.trim();
+            }
+        }
     }
 }

@@ -15,8 +15,7 @@ public class Front {
         System.out.println("2. Cadastrar-se");
         System.out.println("3. Acessar sem login");
         System.out.println("0. Sair do sistema");
-        System.out.print("Sua escolha: ");
-        act = scan.nextInt();
+        act = lerIntSeguro(scan, "Sua escolha: ");
         if (act == 0) {
             System.out.println("Saindo.\n");
         }
@@ -26,11 +25,10 @@ public class Front {
     public void visitorView() {}
 
     public String login() {
-        scan.nextLine();
         System.out.print("Informe seu nome: ");
-        String nome = scan.nextLine();
+        String nome = lerStringSegura(scan, "");
         System.out.print("Informe sua senha: ");
-        String senha = scan.nextLine();
+        String senha = lerStringSegura(scan, "");
         return nome + ';' + senha;
     }
 
@@ -39,28 +37,18 @@ public class Front {
         else System.out.println("Falha ao logar.\n");
     }
 
-    public void LoginResult(int status){
-        if(status == 1){
-            System.out.println("Login bem sucedido\n");
-        } else if (status == -1 ){
-            System.out.println("[ERRO] Acesso negado: Conta desativada ou anonimizada\n");
-        } else {
-            System.out.println("Falha ao logar. Credenciais incorretas\n");
-        }
-    }
-
     public DiscenteData criarDiscenteData(DiscenteData data) {
         scan.nextLine();
         System.out.print("Novo nome: ");
-        data.setNome(scan.nextLine());
+        data.setNome(lerStringSegura(scan, ""));
         System.out.print("Novo email: ");
-        data.setEmail(scan.nextLine());
+        data.setEmail(lerStringSegura(scan, ""));
         System.out.print("Nova senha: ");
-        data.setSenha(scan.nextLine());
+        data.setSenha(lerStringSegura(scan, ""));
         System.out.print("Informe seu no. de matrícula: ");
-        data.setMatricula(scan.nextLine());
+        data.setMatricula(lerStringSegura(scan, ""));
         System.out.print("Informe o seu período atual: ");
-        data.setSemestre(scan.nextInt());
+        data.setSemestre(lerIntSeguro(scan, ""));
         return data;
     }
 
@@ -75,5 +63,34 @@ public class Front {
 
     public void verOportunidadesPendentes(OportData data) {
         System.out.printf("- Título: %s. %s, %s, com %d vagas. %d horas ofertadas. Status: %s\n", data.getTitulo(), data.getTipo(), data.getModalidade(), data.getVagas(), data.getCargaHoraria(), data.getStatus());
+    }
+
+    public int lerIntSeguro(Scanner scan, String mensagem){
+        while(true){
+            if(!mensagem.isBlank()) {
+                System.out.print(mensagem);
+            }
+
+            try {
+                return Integer.parseInt(scan.nextLine());
+            } catch (NumberFormatException e){
+                System.out.println("Entrada inválida! Digite um numero válido");
+            }
+        }
+    }
+
+    public String lerStringSegura(Scanner scan, String mensagem){
+        while(true){
+            if(!mensagem.isBlank()) {
+                System.out.println(mensagem);
+            }
+            String entrada = scan.nextLine();
+
+            if(entrada.isBlank()){
+                System.out.println("Entrada inválida! Este campo não pode ficar vazio");
+            } else {
+                return entrada.trim();
+            }
+        }
     }
 }

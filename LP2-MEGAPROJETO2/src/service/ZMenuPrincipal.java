@@ -35,6 +35,7 @@ public class ZMenuPrincipal {
     CoordenadorView coordenadorView = new CoordenadorView();
     CoordenadorService coordenadorService = new CoordenadorService();
     AdminView adminView = new AdminView();
+    UsuarioService usuarioService = new UsuarioService();
 
     Scanner scanner = new Scanner(System.in);
 
@@ -59,6 +60,8 @@ public class ZMenuPrincipal {
                 case 1 -> {
                     log = front.login();
                     String[] abc = log.split(";");
+                    ArrayList<Usuario> listaDeUsuarios = new ArrayList<>(usuarios.values());
+                    usuarioService.autenticar(abc[0], abc[1], listaDeUsuarios);
                     u = usuarios.get(abc[0]);
                     if (u != null && usuarioExiste(u)) {
                         if (Objects.equals(u.getNome(), abc[0]) && Objects.equals(u.getSenha(), abc[1])) {
@@ -110,7 +113,18 @@ public class ZMenuPrincipal {
 
     public void discenteCtrl(Usuario u) {
         int act;
+        Discente discente = (Discente) u;
         do {
+            int horasTotais = discente.getCurso().getPpcAtual().getHorasExtensao();
+            int horasValidas = 0;
+
+            for(Aproveitamento aprov : lista.values()){
+                if(aprov.getDiscente().equals(discente) && aprov.getStatus() == StatusAproveitamento.APROVADO){
+                    horasValidas += aprov.getHoras();
+                }
+            }
+
+            discenteView.exibirBarraProgresso(horasValidas, horasTotais);
             act = discenteView.view();
             switch (act) {
                 case 1 -> listOportunidades();  // Consultar oportunidades
@@ -504,7 +518,13 @@ public class ZMenuPrincipal {
                     }
                     else adminView.criarCoordenadorResult(false);
                 }
-                case 3 -> adminView.avaliarSolicitacoesGrupo(scanner, grupoService, grupos);
+                case 3 -> {
+                    adminView.avaliarSolicitacoesGrupo(scanner, grupoService, grupos);
+                }
+                case 4 -> {
+                    ArrayList<Usuario> listaDeUsuarios = new ArrayList<>(usuarios.values());
+                    adminView.gerenciarVinculos(scanner, usuarioService, listaDeUsuarios);
+                }
                 case 0 -> {}
             }
         } while (act != 0);

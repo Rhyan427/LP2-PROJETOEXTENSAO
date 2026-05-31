@@ -35,8 +35,7 @@ public class CoordenadorView {
         System.out.println("13. Criar novo PPC");
         System.out.println("14. Ver solicitacoes de grupos");
         System.out.println("0. Sair");
-        System.out.print("Sua escolha: ");
-        int act = scan.nextInt();
+        int act = lerIntSeguro(scan, "Sua escolha: ");
         if (act == 0) {
             System.out.println("Saindo.\n");
         }
@@ -46,30 +45,30 @@ public class CoordenadorView {
     public GrupoData criarGrupoData(GrupoData data) {
         scan.nextLine();
         System.out.print("Nome do grupo: ");
-        data.setNome(scan.nextLine());
+        data.setNome(lerStringSegura(scan, ""));
         System.out.print("Descrição do grupo: ");
-        data.setDescricao(scan.nextLine());
+        data.setDescricao(lerStringSegura(scan, ""));
         System.out.print("Objetivo do grupo: ");
-        data.setObjetivos(scan.nextLine());
+        data.setObjetivos(lerStringSegura(scan, ""));
         System.out.print("Email para contato do grupo: ");
-        data.setEmail(scan.nextLine());
+        data.setEmail(lerStringSegura(scan, ""));
         return data;
     }
 
     public OportData criarOportunidadeData(OportData data) {
         scan.nextLine();
         System.out.print("Informe o título da oportunidade: ");
-        data.setTitulo(scan.nextLine());
+        data.setTitulo(lerStringSegura(scan, ""));
         System.out.print("Informe a descrição da oportunidade: ");
-        data.setDescricao(scan.nextLine());
+        data.setDescricao(lerStringSegura(scan, ""));
         System.out.print("Informe o tipo da oportunidade (projeto, curso, evento, oficina): ");
-        data.setTipo(TipoOportunidade.valueOf(scan.nextLine().toUpperCase()));
+        data.setTipo(TipoOportunidade.valueOf(lerStringSegura(scan, "").toUpperCase()));
         System.out.print("Informe a modalidade da oportunidade (presencial, remoto, hibrido): ");
-        data.setModalidade(Modalidade.valueOf(scan.nextLine().toUpperCase()));
+        data.setModalidade(Modalidade.valueOf(lerStringSegura(scan, "").toUpperCase()));
         System.out.print("Informe a carga horária da oportunidade: ");
-        data.setCargaHoraria(Integer.parseInt(scan.nextLine()));
+        data.setCargaHoraria(Integer.parseInt(lerStringSegura(scan, "")));
         System.out.print("Informe o no. de vagas da oportunidade: ");
-        data.setVagas(Integer.parseInt(scan.nextLine()));
+        data.setVagas(Integer.parseInt(lerStringSegura(scan, "")));
         data.setInicio(LocalDate.now());
         data.setFim(data.getInicio().plusDays(30));
         return data;
@@ -89,9 +88,9 @@ public class CoordenadorView {
     public String avaliarOportunidadesPendentes() {
         scan.nextLine();
         System.out.print("Digite o título da oportunidade aguardando aprovação: ");
-        String titulo = scan.nextLine();
+        String titulo = lerStringSegura(scan, "");
         System.out.print("Digite PUBLICADA para publicar ou CANCELADA para cancelar: ");
-        StatusOportunidade status = StatusOportunidade.valueOf(scan.nextLine().toUpperCase());
+        StatusOportunidade status = StatusOportunidade.valueOf(lerStringSegura(scan, "").toUpperCase());
         return titulo + ";" + status;
     }
 
@@ -116,9 +115,9 @@ public class CoordenadorView {
     public String getMembroGrupo() {
         scan.nextLine();
         System.out.print("Informe o nome do discente: ");
-        String nomeD = scan.nextLine();
+        String nomeD = lerStringSegura(scan, "");
         System.out.print("Informe o nome do grupo: ");
-        String nomeG = scan.nextLine();
+        String nomeG = lerStringSegura(scan, "");
         return nomeD + ";" + nomeG;
     }
 
@@ -134,13 +133,13 @@ public class CoordenadorView {
     public String criarPPC() {
         scan.nextLine();
         System.out.print("Informe a descrição do novo PPC: ");
-        return scan.nextLine();
+        return lerStringSegura(scan, "");
     }
 
     public int criarPPCHoras() {
         scan.nextLine();
         System.out.print("Informe a carga horária de extensão do novo PPC: ");
-        return scan.nextInt();
+        return lerIntSeguro(scan, "");
     }
 
     public void verAproveitamento(AprovtData data) {
@@ -150,13 +149,13 @@ public class CoordenadorView {
     public String analisarAproveitamento() {
         scan.nextLine();
         System.out.print("Veredito sobre a inscrição. Digite APROVADO ou REJEITADO: ");
-        return scan.nextLine().toUpperCase();
+        return lerStringSegura(scan, "").toUpperCase();
     }
 
     public String parecerRecusa() {
         scan.nextLine();
         System.out.print("Justificativa de rejeição: ");
-        return scan.nextLine();
+        return lerStringSegura(scan, "");
     }
 
     public void analisarAproveitamentoResult(boolean result) {
@@ -168,11 +167,11 @@ public class CoordenadorView {
     public String[] indeferirAproveitamento() {
         scan.nextLine();
         System.out.print("Nome do discente da solicitação: ");
-        String nomeDi = scan.nextLine();
+        String nomeDi = lerStringSegura(scan, "");
         System.out.print("Descrição (ID) da solicitação: ");
-        String descricao = scan.nextLine();
+        String descricao = lerStringSegura(scan, "");
         System.out.print("Motivo do indeferimento: ");
-        String motivo = scan.nextLine();
+        String motivo = lerStringSegura(scan, "");
         return new String[]{nomeDi, descricao, motivo};
     }
 
@@ -210,8 +209,7 @@ public class CoordenadorView {
             System.out.println("\n1. Aprovar grupo");
             System.out.println("2. Rejeitar grupo");
             System.out.print("Sua decisao: ");
-            int decisao = scanner.nextInt();
-            scanner.nextLine();
+            int decisao = lerIntSeguro(scanner, "");
 
             if(decisao == 1){
                 grupoService.avaliarSolicitacao(grupoAlvo, true);
@@ -225,6 +223,33 @@ public class CoordenadorView {
         } else if (escolha != -1){
             System.out.println("\nPosicao invalida");
         }
+    }
+    public int lerIntSeguro(Scanner scan, String mensagem){
+        while(true){
+            if(!mensagem.isBlank()) {
+                System.out.print(mensagem);
+            }
 
+            try {
+                return Integer.parseInt(scan.nextLine());
+            } catch (NumberFormatException e){
+                System.out.println("Entrada inválida! Digite um numero válido");
+            }
+        }
+    }
+
+    public String lerStringSegura(Scanner scan, String mensagem){
+        while(true){
+            if(!mensagem.isBlank()) {
+                System.out.print(mensagem);
+            }
+            String entrada = scan.nextLine();
+
+            if(entrada.isBlank()){
+                System.out.println("Entrada inválida! Este campo não pode ficar vazio");
+            } else {
+                return entrada.trim();
+            }
+        }
     }
 }

@@ -19,6 +19,7 @@ public class DiscenteView {
 
     public int view() {
         System.out.println(" === Menu Discente === ");
+
         System.out.println("1. Consultar oportunidades");
         System.out.println("2. Inscrever-se em uma oportunidade");
         System.out.println("3. Cancelar inscrição em oportunidade");
@@ -29,8 +30,7 @@ public class DiscenteView {
         System.out.println("8. Criar uma oportunidade (diretor)");
         System.out.println("9. Fazer solicitacao de grupo");
         System.out.println("0. Sair");
-        System.out.print("Sua escolha: ");
-        int act = scan.nextInt();
+        int act = lerIntSeguro(scan, "Sua escolha: ");
         if (act == 0) {
             System.out.println("Saindo.\n");
         }
@@ -39,7 +39,7 @@ public class DiscenteView {
     public String getOport() {
         scan.nextLine();
         System.out.print("Título da oportunidade:");
-        return scan.nextLine();
+        return lerStringSegura(scan, "");
     }
 
     public void criarInscricaoResult(boolean result) {
@@ -59,17 +59,17 @@ public class DiscenteView {
     public OportData criarOportunidadeData(OportData data) {
         scan.nextLine();
         System.out.print("Informe o título da oportunidade: ");
-        data.setTitulo(scan.nextLine());
+        data.setTitulo(lerStringSegura(scan, ""));
         System.out.print("Informe a descrição da oportunidade: ");
-        data.setDescricao(scan.nextLine());
+        data.setDescricao(lerStringSegura(scan, ""));
         System.out.print("Informe o tipo da oportunidade (projeto, curso, evento, oficina): ");
-        data.setTipo(TipoOportunidade.valueOf(scan.nextLine().toUpperCase()));
+        data.setTipo(TipoOportunidade.valueOf(lerStringSegura(scan, "").toUpperCase()));
         System.out.print("Informe a modalidade da oportunidade (presencial, remoto, hibrido): ");
-        data.setModalidade(Modalidade.valueOf(scan.nextLine().toUpperCase()));
+        data.setModalidade(Modalidade.valueOf(lerStringSegura(scan, "").toUpperCase()));
         System.out.print("Informe a carga horária da oportunidade: ");
-        data.setCargaHoraria(Integer.parseInt(scan.nextLine()));
+        data.setCargaHoraria(Integer.parseInt(lerStringSegura(scan, "")));
         System.out.print("Informe o no. de vagas da oportunidade: ");
-        data.setVagas(Integer.parseInt(scan.nextLine()));
+        data.setVagas(Integer.parseInt(lerStringSegura(scan, "")));
         data.setInicio(LocalDate.now());
         data.setFim(data.getInicio().plusDays(30));
         return data;
@@ -78,7 +78,7 @@ public class DiscenteView {
     public String getResponsavel() {
         scan.nextLine();
         System.out.print("Informe o nome do docente responsável: ");
-        return scan.nextLine();
+        return lerStringSegura(scan, "");
     }
 
     public void criarOportunidadeResult(boolean result) {
@@ -103,11 +103,11 @@ public class DiscenteView {
     public String[] reenviarAproveitamento() {
         scan.nextLine();
         System.out.print("Descrição (ID) da solicitação indeferida: ");
-        String descricao = scan.nextLine();
+        String descricao = lerStringSegura(scan, "");
         System.out.print("Nova descrição: ");
-        String novaDescricao = scan.nextLine();
+        String novaDescricao = lerStringSegura(scan, "");
         System.out.print("Nova carga horária (horas): ");
-        String novasHoras = scan.nextLine();
+        String novasHoras = lerStringSegura(scan, "");
         return new String[]{descricao, novaDescricao, novasHoras};
     }
 
@@ -119,7 +119,7 @@ public class DiscenteView {
     public String criarAproveitamento() {
         scan.nextLine();
         System.out.print("Título da oportunidade a ser aproveitada: ");
-        return scan.nextLine();
+        return lerStringSegura(scan, "");
     }
 
     public void criarAproveitamentoResult(boolean result) {
@@ -149,13 +149,13 @@ public class DiscenteView {
         System.out.println("Formulario: Solicitacao de novo grupo estudantil");
 
         System.out.println("Nome do grupo: ");
-        String nome = scan.nextLine();
+        String nome = lerStringSegura(scan, "");
 
         System.out.println("Descricao das atividades: ");
-        String descricao = scan.nextLine();
+        String descricao = lerStringSegura(scan, "");
 
         System.out.println("Objetivos academicos: ");
-        String objetivos = scan.nextLine();
+        String objetivos = lerStringSegura(scan, "");
 
         System.out.println("Selecione o Docente responsavel: ");
 
@@ -164,7 +164,7 @@ public class DiscenteView {
         }
 
         System.out.println("Opcao: ");
-        int escolha = scan.nextInt();
+        int escolha = lerIntSeguro(scan, "");
         scan.nextLine();
 
         if(escolha >= 0 && escolha < docentes.size()) {
@@ -174,10 +174,38 @@ public class DiscenteView {
 
             grupoService.criarSolicitacao(dadosSocilitacao);
 
-            System.out.println("A solicitacao foi enviada e está pendente de aprovacao");
+            System.out.println("A solicitacao foi enviada e está pendente de aprovação");
         } else {
-            System.out.println("Opcao invalida");
+            System.out.println("Opção inválida");
         }
+    }
 
+    public int lerIntSeguro(Scanner scan, String mensagem){
+        while(true){
+            if(!mensagem.isBlank()) {
+                System.out.print(mensagem);
+            }
+
+            try {
+                return Integer.parseInt(scan.nextLine());
+            } catch (NumberFormatException e){
+                System.out.println("Entrada inválida! Digite um numero válido");
+            }
+        }
+    }
+
+    public String lerStringSegura(Scanner scan, String mensagem){
+        while(true){
+            if(!mensagem.isBlank()) {
+                System.out.println(mensagem);
+            }
+            String entrada = scan.nextLine();
+
+            if(entrada.isBlank()){
+                System.out.println("Entrada inválida! Este campo não pode ficar vazio");
+            } else {
+                return entrada.trim();
+            }
+        }
     }
 }

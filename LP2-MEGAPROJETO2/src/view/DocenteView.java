@@ -30,8 +30,7 @@ public class DocenteView {
         System.out.println("14. Remover cargo de discente em grupo");
         System.out.println("15. Substituir participante em oportunidade");
         System.out.println("0. Sair");
-        System.out.print("Sua escolha: ");
-        int act = scan.nextInt();
+        int act = lerIntSeguro(scan, "Sua escolha");
         if (act == 0) {
             System.out.println("Saindo.\n");
         }
@@ -41,17 +40,17 @@ public class DocenteView {
     public OportData criarOportunidadeData(OportData data) {
         scan.nextLine();
         System.out.print("Informe o título da oportunidade: ");
-        data.setTitulo(scan.nextLine());
+        data.setTitulo(lerStringSegura(scan, ""));
         System.out.print("Informe a descrição da oportunidade: ");
-        data.setDescricao(scan.nextLine());
+        data.setDescricao(lerStringSegura(scan, ""));
         System.out.print("Informe o tipo da oportunidade (projeto, curso, evento, oficina): ");
         data.setTipo(TipoOportunidade.valueOf(scan.nextLine().toUpperCase()));
         System.out.print("Informe a modalidade da oportunidade (presencial, remoto, hibrido): ");
         data.setModalidade(Modalidade.valueOf(scan.nextLine().toUpperCase()));
         System.out.print("Informe a carga horária da oportunidade: ");
-        data.setCargaHoraria(Integer.parseInt(scan.nextLine()));
+        data.setCargaHoraria(lerIntSeguro(scan, ""));
         System.out.print("Informe o no. de vagas da oportunidade: ");
-        data.setVagas(Integer.parseInt(scan.nextLine()));
+        data.setVagas(Integer.parseInt(lerStringSegura(scan, "")));
         data.setInicio(LocalDate.now());
         data.setFim(data.getInicio().plusDays(30));
         return data;
@@ -67,7 +66,7 @@ public class DocenteView {
         System.out.print("Digite o título da oportunidade aguardando aprovação: ");
         String titulo = scan.nextLine();
         System.out.print("Digite PUBLICADA para publicar ou CANCELADA para cancelar: ");
-        StatusOportunidade status = StatusOportunidade.valueOf(scan.nextLine().toUpperCase());
+        StatusOportunidade status = StatusOportunidade.valueOf(lerStringSegura(scan, "").toUpperCase());
         return titulo + ";" + status;
     }
 
@@ -79,7 +78,7 @@ public class DocenteView {
     public String fecharInscricoes() {
         scan.nextLine();
         System.out.print("Informe o título da oportunidade a ser iniciada: ");
-        return scan.nextLine();
+        return lerStringSegura(scan, "");
     }
     public void fecharInscricoesResult(boolean result) {
         if (result) System.out.println("Oportunidade iniciada com sucesso.\n");
@@ -89,7 +88,7 @@ public class DocenteView {
     public String encerrarOportunidade() {
         scan.nextLine();
         System.out.print("Informe o título da oportunidade a ser encerrada: ");
-        return scan.nextLine();
+        return lerStringSegura(scan, "");
     }
     public void encerrarOportunidadeResult(boolean result) {
         if (result) System.out.println("Oportunidade finalizada com sucesso.\n");
@@ -107,7 +106,7 @@ public class DocenteView {
     public String avaliarInscricao() {
         scan.nextLine();
         System.out.print("Veredito sobre a inscrição. Digite APROVADO ou REJEITADO: ");
-        return scan.nextLine().toUpperCase();
+        return lerStringSegura(scan, "").toUpperCase();
     }
     public void avaliarInscricaoResult(boolean result) {
         if (result) System.out.println("Status da inscrição alterada com sucesso.\n");
@@ -117,7 +116,7 @@ public class DocenteView {
     public String avaliarCertificadoPendente() {
         scan.nextLine();
         System.out.print("Digite ASSINADO para validar ou RECUSADO para cancelar: ");
-        return scan.nextLine();
+        return lerStringSegura(scan, "");
     }
 
     public void avaliarCertificadoResult(boolean result) {
@@ -130,9 +129,9 @@ public class DocenteView {
     public String promoverDiscente() {
         scan.nextLine();
         System.out.print("Nome do discente a ser promovido: ");
-        String nomeDs = scan.nextLine();
+        String nomeDs = lerStringSegura(scan, "");
         System.out.print("Nome do grupo onde o discente está: ");
-        String nomeGp = scan.nextLine();
+        String nomeGp = lerStringSegura(scan, "");
         return nomeDs + ";" + nomeGp;
     }
 
@@ -144,20 +143,20 @@ public class DocenteView {
     public String atribuirCargo() {
         scan.nextLine();
         System.out.print("Nome do grupo onde o discente está: ");
-        String nomeGp = scan.nextLine();
+        String nomeGp = lerStringSegura(scan, "");
         System.out.print("Nome do discente a receber o cargo: ");
-        String nomeDs = scan.nextLine();
+        String nomeDs = lerStringSegura(scan, "");
         System.out.print("Informe o cargo (DIRETOR, VICE, TESOUREIRO, MEMBRO): ");
-        String cargo = scan.nextLine().toUpperCase();
+        String cargo = lerStringSegura(scan, "").toUpperCase();
         return nomeGp + ";" + nomeDs + ";" + cargo;
     }
 
     public String removerCargo() {
         scan.nextLine();
         System.out.print("Nome do grupo onde o discente está: ");
-        String nomeGp = scan.nextLine();
+        String nomeGp = lerStringSegura(scan, "");
         System.out.print("Nome do discente a ser destituído do cargo: ");
-        String nomeDs = scan.nextLine();
+        String nomeDs = lerStringSegura(scan, "");
         return nomeGp + ";" + nomeDs;
     }
 
@@ -169,18 +168,47 @@ public class DocenteView {
     public String substituirParticipante() {
         scan.nextLine();
         System.out.print("Informe o título da oportunidade: ");
-        String titulo = scan.nextLine();
+        String titulo = lerStringSegura(scan, "");
         System.out.print("Nome do discente que será REMOVIDO: ");
-        String saindo = scan.nextLine();
+        String saindo = lerStringSegura(scan, "");
         System.out.print("Justificativa para a remoção: ");
-        String just = scan.nextLine();
+        String just = lerStringSegura(scan, "");
         System.out.print("Nome do discente que ASSUMIRÁ a vaga: ");
-        String entrando = scan.nextLine();
+        String entrando = lerStringSegura(scan, "");
         return titulo + ";" + saindo + ";" + just + ";" + entrando;
     }
 
     public void substituirParticipanteResult(boolean result) {
         if (result) System.out.println("Participante substituído com sucesso na Oportunidade.\n");
         else System.out.println("Falha ao efetuar a substituição. Verifique se os nomes estão corretos e se há alunos pendentes.\n");
+    }
+
+    public int lerIntSeguro(Scanner scan, String mensagem){
+        while(true){
+            if(!mensagem.isBlank()) {
+                System.out.print(mensagem);
+            }
+
+            try {
+                return Integer.parseInt(scan.nextLine());
+            } catch (NumberFormatException e){
+                System.out.println("Entrada inválida! Digite um numero válido");
+            }
+        }
+    }
+
+    public String lerStringSegura(Scanner scan, String mensagem){
+        while(true){
+            if(!mensagem.isBlank()) {
+                System.out.println(mensagem);
+            }
+            String entrada = scan.nextLine();
+
+            if(entrada.isBlank()){
+                System.out.println("Entrada inválida! Este campo não pode ficar vazio");
+            } else {
+                return entrada.trim();
+            }
+        }
     }
 }
