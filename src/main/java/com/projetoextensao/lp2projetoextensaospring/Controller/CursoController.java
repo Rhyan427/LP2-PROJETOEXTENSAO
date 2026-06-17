@@ -3,6 +3,7 @@ package com.projetoextensao.lp2projetoextensaospring.Controller;
 import com.projetoextensao.lp2projetoextensaospring.entity.Curso;
 import com.projetoextensao.lp2projetoextensaospring.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +20,7 @@ public class CursoController {
      * @return pede para o Service atualizar o PPC
      */
     @PostMapping("/{id}/atualizar_ppc")
+    @ResponseStatus(HttpStatus.CREATED)
     public Curso atualizarPPC(@PathVariable Integer id, @RequestBody Curso novoPPC){
         return cursoService.atualizarPPC(id, novoPPC);
     }

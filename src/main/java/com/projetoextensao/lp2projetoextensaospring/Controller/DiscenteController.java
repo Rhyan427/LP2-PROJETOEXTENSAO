@@ -24,9 +24,9 @@ public class DiscenteController {
      * @return o discente salvo
      */
     @PostMapping
-    public ResponseEntity<Discente> criarDiscente(@RequestBody DiscenteData dt){
-        Discente novoDiscente = discenteService.criarDiscente(dt);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoDiscente);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Discente criarDiscente(DiscenteData dt){
+        return discenteService.criarDiscente((dt));
     }
 
 
@@ -34,9 +34,11 @@ public class DiscenteController {
      *
      * @return o métod o de listar todos os discentes no banco de dados com a mensagem de ok
      */
+    //todo: Verificar se o status a retornar é OK ou ACCEPTED
     @GetMapping
-    public ResponseEntity<List<Discente>> listarTodos(){
-        return ResponseEntity.ok(discenteService.listarTodos());
+    @ResponseStatus(HttpStatus.OK)
+    public List<Discente> listarTodos(){
+        return discenteService.listarTodos();
     }
 
     /**
@@ -45,10 +47,14 @@ public class DiscenteController {
      * @return o métod o de buscar por ID e, se achar, retorna a resposta ok e, se não achar, retorna o erro 404
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Discente> buscarPorId(@PathVariable Integer id){
-        return discenteService.buscarPorId(id)
-                .map(d -> ResponseEntity.ok().body(d))
-                .orElse(ResponseEntity.notFound().build());
+    @ResponseStatus(HttpStatus.OK)
+    public Discente buscarPorId(@PathVariable Integer id){
+        return discenteService.buscarPorId(id).orElse(null);
     }
 
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Discente buscarPorMatricula(String matricula){
+        return discenteService.buscarPorMatricula(matricula);
+    }
 }
