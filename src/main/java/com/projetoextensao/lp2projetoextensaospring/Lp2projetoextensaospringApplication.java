@@ -7,9 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EntityScan(basePackages = {"entity"})
-@EnableJpaRepositories(basePackages = {"repository"})
-@ComponentScan(basePackages = {"com.projetoextensao.lp2projetoextensaospring", "service", "view", "dataTransfer"})
 public class Lp2projetoextensaospringApplication {
 
     public static void main(String[] args) {
