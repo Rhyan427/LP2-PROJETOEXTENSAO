@@ -15,7 +15,7 @@ public class CursoService {
      *
      * @param idCurso recebe o ID do curso que quer modificar o PPC
      * @param novoPPC recebe o curso que terá os novos dados do PPC
-     * @return salva o novo curso no banco de dados
+     * @return o novo curso no banco de dados
      */
     public Curso atualizarPPC(Integer idCurso, Curso novoPPC){
         Curso cursoAntigo = cursoRepo.findById(idCurso).orElseThrow(() -> new RuntimeException());

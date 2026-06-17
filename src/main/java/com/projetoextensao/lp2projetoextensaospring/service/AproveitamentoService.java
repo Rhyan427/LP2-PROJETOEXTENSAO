@@ -17,6 +17,12 @@ public class AproveitamentoService {
     @Autowired
     private AproveitamentoRepo repository;
 
+    /**
+     *
+     * @param data converte os dados JSON para AprovtData
+     * @return o aproveitamento criado e salvo no repositório
+     */
+
     public Aproveitamento criarAproveitamento(AprovtData data) {
         Aproveitamento novo = new Aproveitamento(
                 data.getDiscente(),
@@ -27,6 +33,13 @@ public class AproveitamentoService {
         return repository.save(novo);
     }
 
+    /**
+     *
+     * @param discente recebe o discente para o cálculo
+     * @param todosAproveitamentos lista de todos os aproveitamentos para filtrar
+     * @return o total de horas aprovadas para aquele dicente
+     */
+
     public int calcularHorasAprovadas(Discente discente, List<Aproveitamento> todosAproveitamentos) {
         return todosAproveitamentos.stream()
                 .filter(aproveitamento -> aproveitamento.getDiscente().getMatricula().equals(discente.getMatricula()))
@@ -35,7 +48,12 @@ public class AproveitamentoService {
                 .sum();
     }
 
-    // RF022 — coordenador indefere: registra motivo e abre prazo de 5 dias para reenvio
+    /**
+     * RF022 — coordenador indefere: registra motivo e abre prazo de 5 dias para reenvio
+     * @param aprov recebe o aproveitamento que será indeferido
+     * @param motivo a string contendo a justificativa do indeferimento
+     * @return true se o indeferimento for bem sucedido, se não, false
+     */
     public boolean indeferir(Aproveitamento aprov, String motivo) {
         if (aprov == null) return false;
 
@@ -54,7 +72,13 @@ public class AproveitamentoService {
         return true;
     }
 
-    // RF023 — discente reenvia solicitação indeferida dentro do prazo de 5 dias
+    /**
+     * @param aprov recebe o aproveitamento em questão
+     * @param novaDescricao recebe a nova descrição que irá substituir a antiga
+     * @param novasHoras recebe a nova quantidade de horas
+     * @return true se o aproveitamento puder ser reenviado, se não, false
+     */
+
     public boolean reenviar(Aproveitamento aprov, String novaDescricao, int novasHoras) {
         if (aprov == null) return false;
 

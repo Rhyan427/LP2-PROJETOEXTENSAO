@@ -20,7 +20,7 @@ public class DiscenteController {
 
     /**
      *
-     * @param dt converte o JSON para o objeto DiscenteData para passar para o método de criar um Discente
+     * @param dt converte o JSON para o objeto DiscenteData para passar para o métod o de criar um Discente
      * @return o discente salvo
      */
     @PostMapping
