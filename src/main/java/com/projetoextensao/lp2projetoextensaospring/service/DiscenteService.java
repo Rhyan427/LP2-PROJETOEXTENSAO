@@ -49,8 +49,8 @@ public class DiscenteService {
 
     /**
      *
-     * @param id passa o id para buscar um discente no banco
-     * @return o usuario achado por aquele ID
+     * @param id recebe o id para buscar um discente no banco
+     * @return o usuario correspondente ao ID especificado
      */
     public Optional<Discente> buscarPorId(Integer id){
         return repository.findById(id);

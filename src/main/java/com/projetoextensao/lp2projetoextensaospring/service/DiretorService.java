@@ -14,6 +14,12 @@ public class DiretorService {
     @Autowired
     private DiretorRepo repository;
 
+    /**
+     *
+     * @param data recebe os dados de cadastro do novo diretor
+     * @return o novo usuário salvo no banco de dados
+     */
+
     public Diretor criarDiretor(DiretorData data) {
         LocalDate inicio = LocalDate.now();
         Diretor dir = new Diretor(data.getNome(),
@@ -28,6 +34,12 @@ public class DiretorService {
                 inicio.plusDays(30));
         return repository.save(dir);
     }
+
+    /**
+     *
+     * @param id recebe o id do diretor a ser buscado
+     * @return os dados do diretor correspondente, ou se não for encontrado, retornna "null"
+     */
 
     public Diretor buscarDiretor(Integer id){
         return repository.findById(id).orElse(null);

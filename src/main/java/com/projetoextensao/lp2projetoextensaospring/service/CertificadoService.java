@@ -12,6 +12,12 @@ public class CertificadoService {
     @Autowired
     private CertificadoRepo repository;
 
+    /**
+     *
+     * @param data recebe os dados a serem inseridos no novo certificado
+     * @return o novo certificado salvo no banco de dados
+     */
+
     public Certificado criarCertificado(CertData data) {
         Certificado novo = new Certificado(data.getDiscente(),
                 data.getOportunidade(),
@@ -19,6 +25,12 @@ public class CertificadoService {
                 "certificadoPath");
         return repository.save(novo);
     }
+
+    /**
+     *
+     * @param uuid recebe o identificador único do certificado
+     * @return o certificado correspondente
+     */
 
     public Certificado buscarPorUuid(String uuid){
         return repository.findById(uuid).orElse(null);
