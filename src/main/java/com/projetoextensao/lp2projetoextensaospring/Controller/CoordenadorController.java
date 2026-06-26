@@ -1,21 +1,24 @@
 package com.projetoextensao.lp2projetoextensaospring.Controller;
 
-import com.projetoextensao.lp2projetoextensaospring.dataTransfer.DocenteData;
+
+import com.projetoextensao.lp2projetoextensaospring.dataTransfer.CoordData;
 import com.projetoextensao.lp2projetoextensaospring.dataTransfer.OportData;
 import com.projetoextensao.lp2projetoextensaospring.entity.*;
+import com.projetoextensao.lp2projetoextensaospring.service.CoordenadorService;
 import com.projetoextensao.lp2projetoextensaospring.service.DocenteService;
 import com.projetoextensao.lp2projetoextensaospring.service.OportunidadeService;
 import com.projetoextensao.lp2projetoextensaospring.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.micrometer.observation.autoconfigure.ObservationProperties;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-@Controller
-@RequestMapping("/docente")
-public class DocenteController {
+@RestController
+@RequestMapping("/coordenador")
+public class CoordenadorController {
+
+    @Autowired
+    private CoordenadorService coordenadorService;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -27,41 +30,46 @@ public class DocenteController {
     private OportunidadeService oportunidadeService;
 
     /**
-     * @param dt cria um novo docente recendo os dados do corpo
+     *
+     * @param data recebe o corpo e transforma no objeto DTO
      * @return o status 201 (Created)
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Docente criarDocente(@RequestBody DocenteData dt){
-        return docenteService.criarDocente(dt);
+    public Coordenador criarCoordenador(@RequestBody CoordData data){
+        return coordenadorService.criarCoordenador(data);
     }
 
     /**
-     * @param idDocente pega o id da URL e usa para buscar pelo Docente
-     * @param idUsuario pega o id do Usuario e usa para buscar pelo Usuario
-     * @param oportData cria uma Oportunidade recebendo os dados do corpo
-     * @return se achar o usuario e docente, retorna 200(OK)
+     *
+     * @param idUsuario pega o id do usuario pela URL
+     * @param idDocente pega o id do docente pela URL
+     * @param idCoordenador pega o id do coordenador fazendo a requisicao pela URL
+     * @param data requisita o corpo e transforma num DTO
+     * @return 201 (CREATED) se conseguir criar
      */
-    @PostMapping("/{idDocente}/oportunidade/usuario/{idUsuario}")
-    @ResponseStatus(HttpStatus.OK)
-    public Oportunidade criarOportunidade(@PathVariable Integer idDocente, @PathVariable Integer idUsuario,
-                                          @RequestBody OportData oportData){
+    @PostMapping("/{idCoordenador}/oportunidade/usuario/{idUsuario}/docente/{idDocente}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Oportunidade criarOportunidade(@PathVariable Integer idUsuario, @PathVariable Integer idDocente,
+                                          @PathVariable Integer idCoordenador, @RequestBody OportData data){
 
-        Docente docente = docenteService.buscarPorId(idDocente)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Docente nao encontrado"));
+        coordenadorService.buscarPorId(idCoordenador)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "nao foi possivel achar o coordenador"));
 
         Usuario usuario = buscarUsuario(idUsuario);
 
-        return docenteService.criarOportunidade(usuario, docente, oportData);
-    }
+        Docente docente = docenteService.buscarPorId(idDocente)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Docente não encontrado"));
 
+        return coordenadorService.criarOportunidade(usuario, docente, data);
+    }
 
     /**
      * @param idOportunidade recebe o id para buscar por uma oportunidade
      * @param idUsuario recebe o id para buscar por um usuario
      * @param status extrai os parametros da requisicao e vincula ao parametro status
      */
-    @PostMapping("/oportunidade/{idOportunidade}/publicar/usuario/{idUsuario}")
+    @PatchMapping("/oportunidade/{idOportunidade}/publicar/usuario/{idUsuario}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void publicar(@PathVariable Integer idOportunidade, @PathVariable Integer idUsuario,
                          @RequestParam StatusOportunidade status){
@@ -81,23 +89,22 @@ public class DocenteController {
      * @param idOportunidade pega o id da oportunidade da URL
      * @param idUsuario pega o id do usuario da URL
      */
-    @GetMapping("/oportunidade/{idOportunidade}/fechar-inscricoes/usuario/{idUsuario}")
+    @PatchMapping("/oportunidade/{idOportunidade}/fechar-inscricoes/usuario/{idUsuario}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void fecharInscricoes(@PathVariable Integer idOportunidade, @PathVariable Integer idUsuario){
         Oportunidade oportunidade = buscarOportunidade(idOportunidade);
 
         Usuario usuario = buscarUsuario(idUsuario);
 
-        boolean sucesso = docenteService.fecharInscricoes(oportunidade, usuario);
+        boolean sucesso = coordenadorService.fecharInscricoes(oportunidade, usuario);
         if(!sucesso){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nao foi possivel fechar as inscricoes");
         }
     }
 
     /**
-     * metodo que, se os campos forem validos, encerra a Oportunidade
-     * @param idOportunidade pega o id da Oportunidade pela URL
-     * @param idUsuario pega o id do usuario pela URL
+     * @param idOportunidade pega o id da Oportunidade na URL
+     * @param idUsuario pega o id do Usuario na URL
      */
     @PatchMapping("/oportunidade/{idOportunidade}/encerrar/usuario/{idUsuario}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -106,16 +113,15 @@ public class DocenteController {
 
         Usuario usuario = buscarUsuario(idUsuario);
 
-        boolean sucesso = docenteService.encerrarOportunidade(oportunidade, usuario);
+        boolean sucesso = coordenadorService.encerrarOportunidade(oportunidade, usuario);
         if(!sucesso){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nao foi possivel encerrar a Oportunidade.");
         }
     }
 
     /**
-     *
      * @param idOportunidade pega o id da Oportunidade na URL
-     * @param idUsuario pega o id do usuario na URL
+     * @param idUsuario pega o id do Usuario na URL
      * @param novoPlano pega por meio do corpo o novo plano que o usuario deseja salvar
      */
     @PatchMapping("/oportunidade/{idOportunidade}/plano/usuario/{idUsuario}")
@@ -127,7 +133,7 @@ public class DocenteController {
 
         Usuario usuario = buscarUsuario(idUsuario);
 
-        boolean sucesso = docenteService.editarPlano(oportunidade, usuario, novoPlano);
+        boolean sucesso = coordenadorService.editarPlano(oportunidade, usuario, novoPlano);
         if(!sucesso){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nao foi possivel editar o plano");
         }

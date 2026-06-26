@@ -44,4 +44,8 @@ public class UsuarioService {
         }
         return null;
     }
+
+    public Optional<Usuario> buscarPorId(Integer id){
+        return repository.findById(id);
+    }
 }
