@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.projetoextensao.lp2projetoextensaospring.repository.OportunidadeRepo;
 
+import java.util.Optional;
+
 @Service
 public class OportunidadeService {
 
@@ -31,7 +33,7 @@ public class OportunidadeService {
         return repository.save(op);
     }
 
-    public Oportunidade buscarPorId(Integer id){
-        return repository.findById(id).orElse(null);
+    public Optional<Oportunidade> buscarPorId(Integer id){
+        return repository.findById(id);
     }
 }

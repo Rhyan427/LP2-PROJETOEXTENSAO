@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.projetoextensao.lp2projetoextensaospring.repository.CoordenadorRepo;
 import com.projetoextensao.lp2projetoextensaospring.repository.OportunidadeRepo;
 
+import java.util.Optional;
+
 @Service
 public class CoordenadorService implements IntOportunidade {
 
@@ -118,5 +120,14 @@ public class CoordenadorService implements IntOportunidade {
         op.setPlano(novoPlano);
         oportunidadeRepo.save(op);
         return true;
+    }
+
+    /**
+     *
+     * @param id id do Coordenador que deseja encontrar
+     * @return o coordenador com o id informado
+     */
+    public Optional<Coordenador> buscarPorId(Integer id){
+        return coordenadorRepo.findById(id);
     }
 }
