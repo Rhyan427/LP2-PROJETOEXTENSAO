@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/discente")
 public class DiscenteController {
 
@@ -25,7 +25,7 @@ public class DiscenteController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Discente criarDiscente(DiscenteData dt){
+    public Discente criarDiscente(@RequestBody DiscenteData dt){
         return discenteService.criarDiscente((dt));
     }
 
@@ -52,9 +52,9 @@ public class DiscenteController {
         return discenteService.buscarPorId(id).orElse(null);
     }
 
-    @GetMapping
+    @GetMapping("/matricula/{matricula}")
     @ResponseStatus(HttpStatus.OK)
-    public Discente buscarPorMatricula(String matricula){
+    public Discente buscarPorMatricula(@PathVariable String matricula){
         return discenteService.buscarPorMatricula(matricula);
     }
 }

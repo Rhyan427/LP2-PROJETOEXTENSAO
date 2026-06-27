@@ -28,13 +28,13 @@ public class DocenteController {
         return docenteService.criarDocente(dt);
     }
 
-    @PostMapping
+    @PostMapping("/oportunidade")
     @ResponseStatus(HttpStatus.OK)
     public Oportunidade criarOportunidade(Docente docente, Docente dos, OportData oportData){
         return docenteService.criarOportunidade(docente, dos, oportData);
     }
 
-    @PostMapping
+    @PostMapping("/oportunidade/publicar")
     @ResponseStatus(HttpStatus.CREATED)
     public boolean publicar(Oportunidade oportunidade, Docente docente, StatusOportunidade status){
         return docenteService.publicar(oportunidade, docente, status);
