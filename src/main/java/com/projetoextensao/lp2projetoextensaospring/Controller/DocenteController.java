@@ -37,8 +37,8 @@ public class DocenteController {
     }
 
     /**
-     * @param idDocente pega o id da URL e usa para buscar pelo Docente
-     * @param idUsuario pega o id do Usuario e usa para buscar pelo Usuario
+     * @param idDocente pega o id do docente responsavel na URL e usa para buscar pelo Docente
+     * @param idUsuario pega o id do Usuario responsavel pela oportunidade e usa para buscar pelo Usuario
      * @param oportData cria uma Oportunidade recebendo os dados do corpo
      * @return se achar o usuario e docente, retorna 200(OK)
      */
@@ -58,7 +58,7 @@ public class DocenteController {
 
     /**
      * @param idOportunidade recebe o id para buscar por uma oportunidade
-     * @param idUsuario recebe o id para buscar por um usuario
+     * @param idUsuario recebe o id para buscar por um usuario que serve como autorizante
      * @param status extrai os parametros da requisicao e vincula ao parametro status
      */
     @PostMapping("/oportunidade/{idOportunidade}/publicar/usuario/{idUsuario}")

@@ -1,7 +1,11 @@
 package com.projetoextensao.lp2projetoextensaospring.service;
 
 import com.projetoextensao.lp2projetoextensaospring.dataTransfer.DiscenteData;
+import com.projetoextensao.lp2projetoextensaospring.entity.Curso;
 import com.projetoextensao.lp2projetoextensaospring.entity.Discente;
+import com.projetoextensao.lp2projetoextensaospring.entity.Papel;
+import com.projetoextensao.lp2projetoextensaospring.repository.CursoRepo;
+import com.projetoextensao.lp2projetoextensaospring.repository.PapelRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.projetoextensao.lp2projetoextensaospring.repository.DiscenteRepo;
@@ -15,6 +19,12 @@ public class DiscenteService {
     @Autowired
     private DiscenteRepo repository;
 
+    @Autowired
+    private PapelRepo papelRepo;
+
+    @Autowired
+    private CursoRepo cursoRepo;
+
     /**
      *
      * @param dt recebe o discente informado pelo controller
@@ -27,6 +37,15 @@ public class DiscenteService {
                 dt.getMatricula(),
                 dt.getSemestre(),
                 dt.getCurso());
+        Papel papel = papelRepo.findById(dt.getPapel().getId())
+                .orElseThrow(() -> new RuntimeException("Papel nao encontrado"));
+        novo.setPapel(papel);
+
+        Curso cursoCompleto = cursoRepo.findById(dt.getCurso().getId())
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+
+        novo.setCurso(cursoCompleto);
+
         return repository.save(novo);
     }
 

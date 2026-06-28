@@ -52,8 +52,8 @@ public class DiscenteController {
     }
 
     /**
-     * @param matricula
-     * @return
+     * @param matricula matricula recebida para a busca
+     * @return retorna o discente com aquela matricula
      */
     @GetMapping("/matricula/{matricula}")
     @ResponseStatus(HttpStatus.OK)

@@ -66,7 +66,7 @@ public class CoordenadorController {
 
     /**
      * @param idOportunidade recebe o id para buscar por uma oportunidade
-     * @param idUsuario recebe o id para buscar por um usuario
+     * @param idUsuario recebe o id para buscar por um usuario que serve como autorizante
      * @param status extrai os parametros da requisicao e vincula ao parametro status
      */
     @PatchMapping("/oportunidade/{idOportunidade}/publicar/usuario/{idUsuario}")
@@ -78,7 +78,7 @@ public class CoordenadorController {
 
         Usuario usuario = buscarUsuario(idUsuario);
 
-        boolean sucesso = docenteService.publicar(oportunidade, usuario, status);
+        boolean sucesso = coordenadorService.publicar(oportunidade, usuario, status);
 
         if(!sucesso){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nao foi possivel criar a oportunidade. Verifique as permissoes");

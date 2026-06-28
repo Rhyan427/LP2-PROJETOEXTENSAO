@@ -2,10 +2,9 @@ package com.projetoextensao.lp2projetoextensaospring.service;
 
 import com.projetoextensao.lp2projetoextensaospring.dataTransfer.DocenteData;
 import com.projetoextensao.lp2projetoextensaospring.dataTransfer.OportData;
-import com.projetoextensao.lp2projetoextensaospring.entity.Docente;
-import com.projetoextensao.lp2projetoextensaospring.entity.Oportunidade;
-import com.projetoextensao.lp2projetoextensaospring.entity.StatusOportunidade;
-import com.projetoextensao.lp2projetoextensaospring.entity.Usuario;
+import com.projetoextensao.lp2projetoextensaospring.entity.*;
+import com.projetoextensao.lp2projetoextensaospring.repository.CursoRepo;
+import com.projetoextensao.lp2projetoextensaospring.repository.PapelRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.projetoextensao.lp2projetoextensaospring.repository.DocenteRepo;
@@ -24,6 +23,9 @@ public class DocenteService implements IntOportunidade {
     private OportunidadeRepo oportunidadeRepository;
 
     @Autowired
+    private PapelRepo papelRepo;
+
+    @Autowired
     private OportunidadeService oportunidadeService;
 
     /**
@@ -37,6 +39,10 @@ public class DocenteService implements IntOportunidade {
                 data.getSenha(),
                 data.getSiape(),
                 data.getDepartamento());
+        Papel papel = papelRepo.findById(data.getPapel().getId())
+                .orElseThrow(() -> new RuntimeException("Papel nao encontrado"));
+        novo.setPapel(papel);
+        novo.setAtivo(true);
         return docenteRepository.save(novo);
     }
 

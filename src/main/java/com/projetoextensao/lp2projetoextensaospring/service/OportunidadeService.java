@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.projetoextensao.lp2projetoextensaospring.repository.OportunidadeRepo;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -30,6 +31,11 @@ public class OportunidadeService {
                 u,
                 d
         );
+        if(data.getDataPlanoAtividades() != null){
+            op.setDataPlanoAtividades(data.getDataPlanoAtividades());
+        } else {
+            op.setDataPlanoAtividades(LocalDate.now());
+        }
         return repository.save(op);
     }
 

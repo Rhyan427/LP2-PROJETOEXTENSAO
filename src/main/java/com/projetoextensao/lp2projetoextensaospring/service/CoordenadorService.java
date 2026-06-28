@@ -3,6 +3,7 @@ package com.projetoextensao.lp2projetoextensaospring.service;
 import com.projetoextensao.lp2projetoextensaospring.dataTransfer.CoordData;
 import com.projetoextensao.lp2projetoextensaospring.dataTransfer.OportData;
 import com.projetoextensao.lp2projetoextensaospring.entity.*;
+import com.projetoextensao.lp2projetoextensaospring.repository.PapelRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.projetoextensao.lp2projetoextensaospring.repository.CoordenadorRepo;
@@ -20,6 +21,9 @@ public class CoordenadorService implements IntOportunidade {
     private OportunidadeRepo oportunidadeRepo;
 
     @Autowired
+    private PapelRepo papelRepo;
+
+    @Autowired
     private OportunidadeService oportunidadeService;
 
     /**
@@ -34,6 +38,10 @@ public class CoordenadorService implements IntOportunidade {
                 data.getSenha(),
                 data.getSiape(),
                 data.getDepartamento());
+        Papel papel = papelRepo.findById(data.getPapel().getId())
+                .orElseThrow(() -> new RuntimeException("Papel nao encontrado"));
+        novo.setPapel(papel);
+        novo.setAtivo(true);
         return coordenadorRepo.save(novo);
     }
 
@@ -42,7 +50,7 @@ public class CoordenadorService implements IntOportunidade {
      * @param u recebe os dados do usuário que está criando a oportunidade
      * @param d recebe os dados do docente que será responsável pela oportunidade
      * @param data recebe os dados a serem inseridos na oportunidade em questão
-     * @return
+     * @return retorna uma oportunidade criada
      */
 
     @Override
