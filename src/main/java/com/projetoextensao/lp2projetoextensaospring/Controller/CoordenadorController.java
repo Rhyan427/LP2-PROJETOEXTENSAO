@@ -42,8 +42,8 @@ public class CoordenadorController {
 
     /**
      *
-     * @param idUsuario pega o id do usuario pela URL
-     * @param idDocente pega o id do docente pela URL
+     * @param idUsuario pega o id do usuario autor da oportunidade pela URL
+     * @param idDocente pega o id do docente responsavel pela oportunidade pela URL
      * @param idCoordenador pega o id do coordenador fazendo a requisicao pela URL
      * @param data requisita o corpo e transforma num DTO
      * @return 201 (CREATED) se conseguir criar

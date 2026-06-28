@@ -38,8 +38,8 @@ public class DocenteController {
     }
 
     /**
-     * @param idDocente pega o id do docente responsavel na URL e usa para buscar pelo Docente
-     * @param idUsuario pega o id do Usuario responsavel pela oportunidade e usa para buscar pelo Usuario
+     * @param idDocente pega o id do docente responsavel pela Oportunidade na URL e usa para buscar pelo Docente
+     * @param idUsuario pega o id do Usuario autor da oportunidade e usa para buscar pelo Usuario
      * @param oportData cria uma Oportunidade recebendo os dados do corpo
      * @return se achar o usuario e docente, retorna 200(OK)
      */
