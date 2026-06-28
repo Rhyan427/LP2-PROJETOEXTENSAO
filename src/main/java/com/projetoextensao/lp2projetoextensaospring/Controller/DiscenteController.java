@@ -12,7 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/discente")
 public class DiscenteController {
 
@@ -52,8 +52,8 @@ public class DiscenteController {
     }
 
     /**
-     * @param matricula matricula recebida para a busca
-     * @return retorna o discente com aquela matricula
+     * @param matricula
+     * @return
      */
     @GetMapping("/matricula/{matricula}")
     @ResponseStatus(HttpStatus.OK)

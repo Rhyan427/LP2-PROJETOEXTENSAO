@@ -4,13 +4,22 @@ import com.projetoextensao.lp2projetoextensaospring.entity.Discente;
 import com.projetoextensao.lp2projetoextensaospring.entity.Inscricao;
 import com.projetoextensao.lp2projetoextensaospring.entity.Oportunidade;
 import com.projetoextensao.lp2projetoextensaospring.entity.StatusInscricao;
-
+import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
 public class InscricaoData {
+
+    @NotNull(message = "Os dados do discente são obrigatórios para a inscrição")
     private Discente discente;
+
+    @NotNull(message = "A oportunidade desejada é obrigatória")
     private Oportunidade oportunidade;
+
+    @NotNull(message = "O status da inscrição tem de ser informado")
     private StatusInscricao status;
+
+    @NotNull(message = "A data da inscrição é obrigatória")
+    @PastOrPresent(message = "A data da inscrição não pode estar no futuro")
     private LocalDate dataInscricao;
 
     public InscricaoData(Discente discente, Oportunidade oportunidade, StatusInscricao status, LocalDate dataInscricao) {

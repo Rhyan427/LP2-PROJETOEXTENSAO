@@ -2,16 +2,34 @@ package com.projetoextensao.lp2projetoextensaospring.dataTransfer;
 
 import com.projetoextensao.lp2projetoextensaospring.entity.Docente;
 import com.projetoextensao.lp2projetoextensaospring.entity.Papel;
+import jakarta.validation.constraints.*;
 
 import java.util.Objects;
 
 public class DocenteData {
+
+    @NotBlank(message = "O nome é obrigatório")
+    @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres")
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s]*$", message = "O nome deve conter apenas letras e espaços")
     private String nome;
+
+    @NotBlank(message = "O email é obrigatório")
+    @Email(message = "Formato de email inválido")
     private String email;
+
+    @NotBlank(message = "A senha é obrigatória")
+    @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String senha;
+
     private boolean ativo;
     private Papel papel;
+
+    @NotBlank(message = "O SIAPE é obrigatório")
+    @Pattern(regexp = "^\\d{7}$", message = "O SIAPE deve ter 7 dígitos numéricos")
     private String siape;
+
+    @NotBlank(message = "O departamento é obrigatório")
+    @Size(min = 2, max = 100, message = "O nome do departamento deve ter entre 2 e 100 caracteres")
     private String departamento;
 
     public DocenteData(String nome, String email, String senha, boolean ativo, Papel papel, String siape, String departamento) {

@@ -3,17 +3,38 @@ package com.projetoextensao.lp2projetoextensaospring.dataTransfer;
 import com.projetoextensao.lp2projetoextensaospring.entity.Curso;
 import com.projetoextensao.lp2projetoextensaospring.entity.Discente;
 import com.projetoextensao.lp2projetoextensaospring.entity.Papel;
+import jakarta.validation.constraints.*;
 
 import java.util.Objects;
 
 public class DiscenteData {
+    @NotBlank(message = "O nome não pode estar em branco")
+    @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres")
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s]*$", message = "O nome deve conter apenas letras e espaços")
     private String nome;
+
+    @NotBlank(message = "O email é obrigatório")
+    @Email(message = "Formato de email inválido")
     private String email;
+
+    @NotBlank(message = "A senha não pode estar em branco")
+    @Size(min = 6, message = "A senha precisa ter no mínimo 6 caracteres")
     private String senha;
+
     private boolean ativo;
     private Papel papel;
+
+    @NotBlank(message = "A matrícula é obrigatória")
+    @Size(min = 11, max = 11, message = "A matrícula deve ter 11 dígitos")
+    @Pattern(regexp = "^[0-9]+$", message = "A matrícula deve conter apenas números")
     private String matricula;
+
+    @NotNull(message = "O semestre é obrigatório")
+    @Min(value = 1, message = "O semestre mínimo é 1")
+    @Max(value = 24, message = "O semestre não pode ser maior que 24")
     private int semestre;
+
+
     private Curso curso;
 
     public DiscenteData(){}
