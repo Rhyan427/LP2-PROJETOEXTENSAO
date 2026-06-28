@@ -1,5 +1,6 @@
 package com.projetoextensao.lp2projetoextensaospring.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class Curso {
     private String statusPPC;
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Discente> alunos;
 
     public Integer getId() { return id; }
