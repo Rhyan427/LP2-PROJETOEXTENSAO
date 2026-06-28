@@ -1,25 +1,56 @@
 package com.projetoextensao.lp2projetoextensaospring.dataTransfer;
 
 import com.projetoextensao.lp2projetoextensaospring.entity.*;
-
 import java.time.LocalDate;
+import jakarta.validation.constraints.*;
 
 public class OportData {
+    @NotBlank(message = "O título é obrigatório")
+    @Size(min = 5, max = 150, message = "O título deve ter entre 5 e 150 caracteres")
     private String titulo;
+
+    @NotBlank(message = "A descrição é obrigatória")
+    @Size(min = 20, message = "A descrição deve conter pelo menos 20 caracteres detalhando a oportunidade")
     private String descricao;
+
+    @NotNull(message = "O tipo de oportunidade (PROJETO, CURSO, EVENTO ou OFICINA) é obrigatório")
     private TipoOportunidade tipo;
+
+    @NotNull(message = "A modalidade (PRESENCIAL, REMOTO ou HIBRIDO) é obrigatória")
     private Modalidade modalidade;
-    private int cargaHoraria;
-    private int vagas;
+
+    @NotNull(message = "A carga horária é obrigatória")
+    @Positive(message = "A carga horária deve ser um número positivo (maior que zero)")
+    private Integer cargaHoraria;
+
+
+    @NotNull(message = "O número de vagas é obrigatório")
+    @Min(value = 1, message = "A oportunidade deve ter, pelo menos, 1 vaga disponível")
+    private Integer vagas;
+
     private StatusOportunidade status;
+
+    @FutureOrPresent(message = "A data do plano de atividades não pode estar no passado")
     private LocalDate dataPlanoAtividades;
+
+    @NotNull(message = "A data de início é obrigatória")
+    @FutureOrPresent(message = "A data de início da oportunidade não pode estar no passado")
     private LocalDate inicio;
+
+    @NotNull(message = "A data de fim é obrigatória")
+    @Future(message = "A data de fim da oportunidade deve estar no futuro")
     private LocalDate fim;
-    private Usuario autor;
+
+    @NotNull(message = "O autor da oportunidade tem de ser informado")
+    private Docente autor;
+
+    @NotNull(message = "O docente responsável tem de ser informado")
     private Docente responsavel;
+
+    @NotBlank(message = "O plano da oportunidade não pode estar vazio")
     private String plano;
 
-    public OportData(String titulo, String descricao, TipoOportunidade tipo, Modalidade modalidade, int cargaHoraria, int vagas, StatusOportunidade status, LocalDate dataPlanoAtividades, LocalDate inicio, LocalDate fim, Usuario autor, Docente responsavel, String plano) {
+    public OportData(String titulo, String descricao, TipoOportunidade tipo, Modalidade modalidade, int cargaHoraria, int vagas, StatusOportunidade status, LocalDate dataPlanoAtividades, LocalDate inicio, LocalDate fim, Docente autor, Docente responsavel, String plano) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.tipo = tipo;
@@ -55,7 +86,7 @@ public class OportData {
         this.dataPlanoAtividades = oportunidade.getDataPlanoAtividades();
         this.inicio = oportunidade.getInicio();
         this.fim = oportunidade.getFim();
-        this.autor = oportunidade.getAutor();
+        this.autor = (Docente) oportunidade.getAutor();
         this.responsavel = oportunidade.getResponsavel();
         this.plano = oportunidade.getPlano();
     }
@@ -82,8 +113,8 @@ public class OportData {
     public void setInicio(LocalDate inicio) { this.inicio = inicio; }
     public LocalDate getFim() { return fim; }
     public void setFim(LocalDate fim) { this.fim = fim; }
-    public Usuario getAutor() { return autor; }
-    public void setAutor(Usuario autor) { this.autor = autor; }
+    public Docente getAutor() { return autor; }
+    public void setAutor(Docente autor) { this.autor = autor; }
     public Docente getResponsavel() { return responsavel; }
     public void setResponsavel(Docente responsavel) { this.responsavel = responsavel; }
     public String getPlano() { return plano; }
