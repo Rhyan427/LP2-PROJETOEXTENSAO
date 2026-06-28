@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class DiscenteController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Discente criarDiscente(@RequestBody DiscenteData dt){
+    public Discente criarDiscente(@RequestBody @Valid DiscenteData dt){
         return discenteService.criarDiscente(dt);
     }
 

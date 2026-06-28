@@ -6,6 +6,7 @@ import com.projetoextensao.lp2projetoextensaospring.entity.*;
 import com.projetoextensao.lp2projetoextensaospring.service.DocenteService;
 import com.projetoextensao.lp2projetoextensaospring.service.OportunidadeService;
 import com.projetoextensao.lp2projetoextensaospring.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.micrometer.observation.autoconfigure.ObservationProperties;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class DocenteController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Docente criarDocente(@RequestBody DocenteData dt){
+    public Docente criarDocente(@RequestBody @Valid DocenteData dt){
         return docenteService.criarDocente(dt);
     }
 
