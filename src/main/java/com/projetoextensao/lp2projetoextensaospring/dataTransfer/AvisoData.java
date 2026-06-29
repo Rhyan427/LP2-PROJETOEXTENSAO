@@ -25,4 +25,10 @@ public class AvisoData {
         this.dataPublicacao = LocalDate.now();
     }
 
+    public AvisoData(String titulo, String mensagem, LocalDate dataPublicacao) {
+        this.titulo = titulo;
+        this.mensagem = mensagem;
+        this.dataPublicacao = LocalDate.now();
+    }
+
 }

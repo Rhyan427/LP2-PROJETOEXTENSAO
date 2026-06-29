@@ -1,5 +1,6 @@
 package com.projetoextensao.lp2projetoextensaospring.service;
 
+import com.projetoextensao.lp2projetoextensaospring.dataTransfer.AvisoData;
 import com.projetoextensao.lp2projetoextensaospring.entity.Aviso;
 import com.projetoextensao.lp2projetoextensaospring.entity.Diretor;
 import com.projetoextensao.lp2projetoextensaospring.entity.Docente;
@@ -22,20 +23,15 @@ public class AvisoService {
 
     /**
      * @param autor recebe o autor do aviso
-     * @param titulo recebe o título do aviso
-     * @param mensagem recebe uma string com o conteúdo do aviso em questão
+     * @param
+     * @param
      * @return true se o aviso puder ser cadastrado, se não, false
      */
 
-    public boolean publicarAviso(Usuario autor, String titulo, String mensagem) {
-        if (autor == null || titulo == null || mensagem == null) {
-            System.out.println("Erro! Dados invalidos para publicar novo aviso");
-            return false;
-        }
+    public boolean publicarAviso(Usuario autor, AvisoData data) {
 
         if (autor instanceof Docente || autor instanceof Diretor) {
-            Aviso novo = new Aviso(titulo, mensagem, autor);
-            System.out.println("Aviso publicado por " + autor.getNome());
+            Aviso novo = new Aviso(data.getTitulo(), data.getMensagem(), data.getAutor());
             repository.save(novo);
             return true;
         } else {
