@@ -20,7 +20,7 @@ public class DiretorController {
      * @return retorna o diretor que foi criado
      */
 
-    @PostMapping("/criar")
+    @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public Diretor criarDiretor(@RequestBody DiretorData diretor){
         return diretorService.criarDiretor(diretor);

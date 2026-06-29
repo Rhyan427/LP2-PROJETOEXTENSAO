@@ -15,10 +15,10 @@ public class Diretor extends Discente {
     @Column(nullable = false)
     private String cargo;
 
-    @Column(name = "data_inicio", nullable = false)
+    @Column(name = "data_inicio")
     private LocalDate dataInicio;
 
-    @Column(name = "data_fim", nullable = false)
+    @Column(name = "data_fim")
     private LocalDate dataFim;
 
     public Grupo getGrupo() {
