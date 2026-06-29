@@ -10,6 +10,7 @@ import com.projetoextensao.lp2projetoextensaospring.repository.AproveitamentoRep
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AproveitamentoService {
@@ -79,7 +80,7 @@ public class AproveitamentoService {
      * @return true se o aproveitamento puder ser reenviado, se não, false
      */
 
-    public boolean reenviar(AprovtData aprov, String novaDescricao, int novasHoras) {
+    public boolean reenviar(Aproveitamento aprov, String novaDescricao, Integer novasHoras) {
         if (aprov == null) return false;
 
         Aproveitamento aproveitamento = new Aproveitamento();
@@ -96,11 +97,16 @@ public class AproveitamentoService {
         aproveitamento.setStatus(StatusAproveitamento.PENDENTE);
         aproveitamento.setMotivo_rejeicao("N/A");
         aproveitamento.setDataLimiteReenvio(null);
-        aproveitamento.setInstituicao(aprov.getInstituicao());
-        aproveitamento.setCertificado(aprov.getCertificado());
-        aproveitamento.setHoras(aprov.getHoras());
 
         repository.save(aproveitamento);
         return true;
+    }
+
+    public List <Aproveitamento> listarTodos (){
+        return repository.findAll();
+    }
+
+    public Optional <Aproveitamento> buscarPorId(Integer id){
+        return repository.findById(id);
     }
 }

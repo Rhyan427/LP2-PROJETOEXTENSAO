@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.projetoextensao.lp2projetoextensaospring.repository.DiretorRepo;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class DiretorService {
@@ -41,7 +42,7 @@ public class DiretorService {
      * @return os dados do diretor correspondente, ou se não for encontrado, retornna "null"
      */
 
-    public Diretor buscarDiretor(Integer id){
-        return repository.findById(id).orElse(null);
+    public Optional<Diretor> buscarDiretor(Integer id){
+        return repository.findById(id);
     }
 }
