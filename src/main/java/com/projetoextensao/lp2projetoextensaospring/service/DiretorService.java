@@ -2,6 +2,8 @@ package com.projetoextensao.lp2projetoextensaospring.service;
 
 import com.projetoextensao.lp2projetoextensaospring.dataTransfer.DiretorData;
 import com.projetoextensao.lp2projetoextensaospring.entity.Diretor;
+import com.projetoextensao.lp2projetoextensaospring.entity.Papel;
+import com.projetoextensao.lp2projetoextensaospring.repository.PapelRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.projetoextensao.lp2projetoextensaospring.repository.DiretorRepo;
@@ -14,6 +16,9 @@ public class DiretorService {
 
     @Autowired
     private DiretorRepo repository;
+
+    @Autowired
+    private PapelRepo papelRepo;
 
     /**
      *
@@ -33,6 +38,11 @@ public class DiretorService {
                 "Diretor do grupo " + data.getGrupo().getNome(),
                 inicio,
                 inicio.plusDays(30));
+        Papel papel = papelRepo.findById(data.getPapel().getId())
+                .orElseThrow(() -> new RuntimeException("Papel nao encontrado"));
+        dir.setPapel(papel);
+        dir.setAtivo(true);
+
         return repository.save(dir);
     }
 
