@@ -10,6 +10,8 @@ public class AvisoData {
     private Usuario autor;
     private LocalDate dataPublicacao;
 
+    public AvisoData(){}
+
     public String getTitulo() { return titulo; }
     public void setTitulo(String titulo) { this.titulo = titulo; }
     public String getMensagem() { return mensagem; }
@@ -30,7 +32,5 @@ public class AvisoData {
         this.mensagem = mensagem;
         this.dataPublicacao = LocalDate.now();
     }
-
-    public AvisoData(){}
 
 }

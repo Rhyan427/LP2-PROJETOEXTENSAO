@@ -31,7 +31,7 @@ public class AvisoService {
     public boolean publicarAviso(Usuario autor, AvisoData data) {
 
         if (autor instanceof Docente || autor instanceof Diretor) {
-            Aviso novo = new Aviso(data.getTitulo(), data.getMensagem(), data.getAutor());
+            Aviso novo = new Aviso(data.getTitulo(), data.getMensagem(), autor);
             repository.save(novo);
             return true;
         } else {

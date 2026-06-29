@@ -14,14 +14,14 @@ public class Aviso {
     @Column(nullable = false)
     private String titulo;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(columnDefinition = "TEXT")
     private String mensagem;
 
     @ManyToOne
-    @JoinColumn(name = "autor_id", nullable = false)
+    @JoinColumn(name = "autor_id")
     private Usuario autor;
 
-    @Column(name = "data_publicacao", nullable = false)
+    @Column(name = "data_publicacao")
     private LocalDate dataPublicacao;
 
     public Integer getId() { return id; }
