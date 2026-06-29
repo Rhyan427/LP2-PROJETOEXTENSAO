@@ -26,6 +26,7 @@ public class TestDataConfig implements CommandLineRunner {
             Papel pDiscente = papelRepo.save(new Papel("DISCENTE"));
             Papel pDocente = papelRepo.save(new Papel("DOCENTE"));
             Papel pCoord = papelRepo.save(new Papel("COORDENADOR"));
+            Papel pDiretor = papelRepo.save(new Papel("DIRETOR"));
 
             // 2. Criar Curso
             Curso curso = cursoRepo.save(new Curso("Ciência da Computação", 2026, 1000, 500, "Elegivel"));
