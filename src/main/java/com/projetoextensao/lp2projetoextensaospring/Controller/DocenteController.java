@@ -74,7 +74,7 @@ public class DocenteController {
         boolean sucesso = docenteService.publicar(oportunidade, usuario, status);
 
         if(!sucesso){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nao foi possivel criar a oportunidade. Verifique as permissoes");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nao foi possivel publicar a oportunidade. Verifique as permissoes");
         }
     }
 
