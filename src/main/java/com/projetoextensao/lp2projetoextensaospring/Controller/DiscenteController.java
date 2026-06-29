@@ -13,7 +13,7 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/discente")
 public class DiscenteController {
 
@@ -26,7 +26,7 @@ public class DiscenteController {
      * @return o discente salvo
      */
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public Discente criarDiscente(@RequestBody @Valid DiscenteData dt){
         return discenteService.criarDiscente(dt);
     }
@@ -48,13 +48,14 @@ public class DiscenteController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Discente buscarPorId(@PathVariable Integer id){
-        return discenteService.buscarPorId(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+        return discenteService.buscarPorId(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
         "Discente nao encontrado"));
     }
 
     /**
      * @param matricula
-     * @return
+     * @return um discente com a matricula informada, caso nao ache retorna 404 (NOT_FOUND)
      */
     @GetMapping("/matricula/{matricula}")
     @ResponseStatus(HttpStatus.OK)

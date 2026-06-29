@@ -82,7 +82,7 @@ public class DocenteController {
      * @param idOportunidade pega o id da oportunidade da URL
      * @param idUsuario pega o id do usuario da URL
      */
-    @GetMapping("/oportunidade/{idOportunidade}/fechar-inscricoes/usuario/{idUsuario}")
+    @PatchMapping("/oportunidade/{idOportunidade}/fechar-inscricoes/usuario/{idUsuario}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void fecharInscricoes(@PathVariable Integer idOportunidade, @PathVariable Integer idUsuario){
         Oportunidade oportunidade = buscarOportunidade(idOportunidade);
