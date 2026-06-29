@@ -10,7 +10,7 @@ public class Discente extends Usuario {
 
     private Integer semestre;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "curso_id")
     private Curso curso;
 

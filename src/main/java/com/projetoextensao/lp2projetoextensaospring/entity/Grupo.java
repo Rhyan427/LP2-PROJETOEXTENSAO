@@ -1,5 +1,6 @@
 package com.projetoextensao.lp2projetoextensaospring.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class Grupo {
     private Docente responsavel;
 
     @OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties
     private List<HistoricoCargo> historicoCargos = new ArrayList<>();
 
     public Integer getId() { return id; }
