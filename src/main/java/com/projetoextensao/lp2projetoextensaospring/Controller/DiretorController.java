@@ -14,11 +14,23 @@ public class DiretorController {
     @Autowired
     private DiretorService diretorService;
 
+    /**
+     *
+     * @param diretor recebe um json contendo as informacoes do diretor novo a ser criado
+     * @return retorna o diretor que foi criado
+     */
+
     @PostMapping("/criar")
     @ResponseStatus(HttpStatus.OK)
     public Diretor criarDiretor(@RequestBody DiretorData diretor){
         return diretorService.criarDiretor(diretor);
     }
+
+    /**
+     *
+     * @param idDiretor recebe o caminho relativo ao id do diretor a ser pesquisado no banco
+     * @return se encontrar, retorna o diretor
+     */
 
     @GetMapping("/{idDiretor}")
     @ResponseStatus(HttpStatus.OK)

@@ -27,6 +27,11 @@ public class AvisoController {
         return avisoService.listarAvisos();
     };
 
+    /**
+     *
+     * @param data recebe o json com as informacoes do aviso
+     * @param idUsuario recebe o id do usuario que publicou o aviso
+     */
     @PostMapping("/usuario/{idUsuario}/aviso")
     @ResponseStatus(HttpStatus.OK)
     public void publicarAviso(@RequestBody AvisoData data, @PathVariable Integer idUsuario){

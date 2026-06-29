@@ -21,11 +21,23 @@ public class AproveitamentoController {
     @Autowired
     private DiscenteService discenteService;
 
+    /**
+     *
+     * @param aproveitamento recebe os dados do aproveitamento
+     * @return retorna o aproveitamento criado
+     */
+
     @PostMapping("/criar")
     @ResponseStatus(HttpStatus.OK)
     public Aproveitamento criarAproveitamento(@RequestBody AprovtData aproveitamento){
         return aproveitamentoService.criarAproveitamento(aproveitamento);
     }
+
+    /**
+     *
+     * @param idDiscente recebe o id do discente para calcular as horas aprovadas
+     * @return retorna o total de horas aprovadas para o discente
+     */
 
     @GetMapping("/{idDiscente}")
     @ResponseStatus(HttpStatus.OK)
@@ -36,6 +48,12 @@ public class AproveitamentoController {
 
         return aproveitamentoService.calcularHorasAprovadas(discente, todosOsAproveitamentos);
     }
+
+    /**
+     *
+     * @param idAproveitamento recebe o id do aproveitamento para indeferir
+     * @param motivo recebe a justificativa do indeferimento
+     */
 
     @PatchMapping("/{idAproveitamento}/indeferir")
     @ResponseStatus(HttpStatus.OK)
@@ -48,6 +66,13 @@ public class AproveitamentoController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Permissao negada");
         }
     }
+
+    /**
+     *
+     * @param idAproveitamento recebe o id do aproveitamento para reenviar
+     * @param novaDescricao recebe a nova descricao a ser reenviada
+     * @param novasHoras recebe a nova quantidade de horas a serem reenviadas
+     */
 
     @PatchMapping("/{idAproveitamento}/reenviar")
     @ResponseStatus(HttpStatus.OK)
