@@ -31,4 +31,6 @@ public class AvisoData {
         this.dataPublicacao = LocalDate.now();
     }
 
+    public AvisoData(){}
+
 }

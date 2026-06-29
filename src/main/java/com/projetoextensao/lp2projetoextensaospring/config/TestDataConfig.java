@@ -17,6 +17,7 @@ public class TestDataConfig implements CommandLineRunner {
     @Autowired private DiscenteRepo discRepo;
     @Autowired private OportunidadeRepo oportRepo;
     @Autowired private PapelRepo papelRepo;
+    @Autowired private GrupoRepo grupoRepo;
 
     @Override
     public void run(String... args) throws Exception {
@@ -53,6 +54,22 @@ public class TestDataConfig implements CommandLineRunner {
                 d.setDepartamento("Departamento de Computação");
                 d.setPapel(pDocente);
                 docenteRepo.save(d);
+            }
+
+            var docentes = docenteRepo.findAll();
+            Docente docenteResponsavel = docentes.isEmpty() ? null : docentes.get(0);
+
+
+            if (docenteResponsavel != null) {
+                for (int i = 1; i <= 3; i++) {
+                    Grupo grupo = new Grupo(
+                            "Grupo de Pesquisa " + i,
+                            "Descrição detalhada do grupo " + i,
+                            "grupo" + i + "@ufma.br",
+                            docenteResponsavel
+                    );
+                    grupoRepo.save(grupo);
+                }
             }
 
             // 5. Criar 3 Discentes
