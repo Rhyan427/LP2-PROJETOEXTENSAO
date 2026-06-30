@@ -1,6 +1,7 @@
 package com.projetoextensao.lp2projetoextensaospring.entity;
 
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 
@@ -33,6 +34,9 @@ public class Aviso {
     public Usuario getAutor() { return autor; }
     public void setAutor(Usuario autor) { this.autor = autor; }
     public LocalDate getDataPublicacao() { return dataPublicacao; }
+    public void setDataPublicacao(LocalDate dataPublicacao) {
+        this.dataPublicacao = dataPublicacao;
+    }
 
     public Aviso(String titulo, String mensagem, Usuario autor) {
         this.titulo = titulo;
