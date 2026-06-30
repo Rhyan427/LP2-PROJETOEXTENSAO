@@ -1,6 +1,7 @@
 package com.projetoextensao.lp2projetoextensaospring.Controller;
 
 import com.projetoextensao.lp2projetoextensaospring.dataTransfer.AprovtData;
+import com.projetoextensao.lp2projetoextensaospring.dataTransfer.ReenviarData;
 import com.projetoextensao.lp2projetoextensaospring.entity.Aproveitamento;
 import com.projetoextensao.lp2projetoextensaospring.entity.Discente;
 import com.projetoextensao.lp2projetoextensaospring.service.AproveitamentoService;
@@ -39,7 +40,7 @@ public class AproveitamentoController {
      * @return retorna o total de horas aprovadas para o discente
      */
 
-    @GetMapping("/{idDiscente}")
+    @GetMapping("/discente/{idDiscente}")
     @ResponseStatus(HttpStatus.OK)
     public Integer calcularHorasAprovadas(@PathVariable Integer idDiscente){
         List<Aproveitamento> todosOsAproveitamentos = aproveitamentoService.listarTodos();
@@ -67,20 +68,15 @@ public class AproveitamentoController {
         }
     }
 
-    /**
-     *
-     * @param idAproveitamento recebe o id do aproveitamento para reenviar
-     * @param novaDescricao recebe a nova descricao a ser reenviada
-     * @param novasHoras recebe a nova quantidade de horas a serem reenviadas
-     */
+
 
     @PatchMapping("/{idAproveitamento}/reenviar")
     @ResponseStatus(HttpStatus.OK)
-    public void reenviar(@PathVariable Integer idAproveitamento, @RequestBody String novaDescricao, @RequestBody Integer novasHoras){
+    public void reenviar(@PathVariable Integer idAproveitamento, @RequestBody ReenviarData reenviarData){
         Aproveitamento aproveitamento = aproveitamentoService.buscarPorId(idAproveitamento)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Nao foi possivel achar o aproveitamento"));
 
-        Boolean sucesso = aproveitamentoService.reenviar(aproveitamento, novaDescricao, novasHoras);
+        Boolean sucesso = aproveitamentoService.reenviar(aproveitamento, reenviarData.getNovaDescricao(), reenviarData.getNovasHoras());
 
         if (!sucesso){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Permissao negada");

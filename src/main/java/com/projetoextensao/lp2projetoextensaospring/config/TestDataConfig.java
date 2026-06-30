@@ -84,6 +84,8 @@ public class TestDataConfig implements CommandLineRunner {
                 discRepo.save(d);
             }
 
+            //TODO: criar aproveitamentos predefinidos
+
             // 6. Criar 3 Oportunidades
             var coords = coordRepo.findAll();
             if (!coords.isEmpty()) {
