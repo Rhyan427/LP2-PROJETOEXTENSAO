@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class GrupoService {
@@ -107,7 +108,7 @@ public class GrupoService {
     }
 
     // 1. Método que o DiscenteView está a tentar chamar para pedir um grupo novo
-    public void criarSolicitacao(GrupoData data) {
+    public void solicitarGrupo(GrupoData data) {
         // Como não sabemos exatamente onde eles querem guardar os pendentes,
         // você pode adaptar isto depois. Por enquanto, criamos o grupo e marcamos como INATIVO.
         if (!grupoExiste(data.getNome(), data.getEmail()) && data.getResponsavel() != null) {
@@ -120,12 +121,13 @@ public class GrupoService {
 
             // Aqui seria ideal ter um StatusGrupo.PENDENTE, mas como só temos ATIVO e INATIVO:
             novo.setStatus(StatusGrupo.INATIVO);
-            grupoRepository.save(novo);
+
             System.out.println("Solicitação do grupo " + data.getNome() + " enviada para avaliação.");
+            grupoRepository.save(novo);
         }
     }
 
-    public List<Grupo> listarGruposPendentes(HashMap<String, Grupo> mapaDeGrupos) {
+    public List<Grupo> listarGruposPendentes() {
         return grupoRepository.findByStatus(StatusGrupo.INATIVO);
     }
 
@@ -145,5 +147,9 @@ public class GrupoService {
             }
         }
         return false; // Falhou porque o grupo não existe
+    }
+
+    public Optional<Grupo> buscarPorId(Integer id) {
+        return grupoRepository.findById(id);
     }
 }

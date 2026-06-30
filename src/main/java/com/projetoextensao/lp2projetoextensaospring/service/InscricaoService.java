@@ -1,9 +1,12 @@
 package com.projetoextensao.lp2projetoextensaospring.service;
 
+import com.projetoextensao.lp2projetoextensaospring.dataTransfer.InscricaoData;
 import com.projetoextensao.lp2projetoextensaospring.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.projetoextensao.lp2projetoextensaospring.repository.InscricaoRepo;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,7 +27,10 @@ public class InscricaoService {
         }
     }
 
-    public void verInscricoesPorDiscente(Discente di) {
+    public void verInscricoesPorDiscente(Integer idDiscente) {
+        DiscenteService discenteService = new DiscenteService();
+        Discente di = discenteService.buscarPorId(idDiscente)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Discente nao encontrado."));
         List<Inscricao> inscricoes = repository.findByDiscente(di);
         for (Inscricao ins : inscricoes) {
             if (Objects.equals(ins.getDiscente(), di)) {
@@ -42,7 +48,9 @@ public class InscricaoService {
         }
     }
 
-    public Inscricao fazerInscricao(Discente di, Oportunidade oportunidade) {
+    public Inscricao fazerInscricao(InscricaoData data) {
+        Discente di = data.getDiscente();
+        Oportunidade oportunidade = data.getOportunidade();
         if (!inscricaoExiste(di, oportunidade) && oportunidade.getStatus() == StatusOportunidade.PUBLICADA) {
             Inscricao inscricao = new Inscricao(di, oportunidade, StatusInscricao.PENDENTE, LocalDate.now());
 
@@ -55,10 +63,8 @@ public class InscricaoService {
         return repository.existsByDiscenteAndOportunidade(di, oportunidade);
     }
 
-    public boolean analisarInscricao(String tituloOp, String nomeDi, StatusInscricao status) {
-        Optional<Inscricao> optionalIns = repository.findByOportunidade_TituloAndDiscente_Nome(tituloOp, nomeDi);
-        if(optionalIns.isPresent()){
-            Inscricao ins = optionalIns.get();
+    public boolean analisarInscricao(Inscricao ins, StatusInscricao status) {
+        if (ins != null) {
             ins.setStatus(status);
             repository.save(ins);
             return true;
@@ -78,29 +84,8 @@ public class InscricaoService {
         return false;
     }
 
-    public boolean substituirParticipante(Oportunidade op, Discente in, Discente out, String justificativa  ){
 
-        Optional<Inscricao> optSaindo = repository.findByOportunidadeAndDiscente(op, out);
-        Optional<Inscricao> optEntrando = repository.findByOportunidadeAndDiscente(op, in);
-
-
-        if (optSaindo.isPresent() && optEntrando.isPresent()) {
-            Inscricao inscricaoSaindo = optSaindo.get();
-            Inscricao inscricaoEntrando = optEntrando.get();
-
-            if (inscricaoSaindo.getStatus() == StatusInscricao.APROVADO &&
-                    inscricaoEntrando.getStatus() == StatusInscricao.PENDENTE) {
-
-                inscricaoSaindo.setStatus(StatusInscricao.CANCELADO);
-                inscricaoSaindo.setJustificativa(justificativa);
-
-                inscricaoEntrando.setStatus(StatusInscricao.APROVADO);
-
-                repository.save(inscricaoSaindo);
-                repository.save(inscricaoEntrando);
-                return true;
-            }
-        }
-        return false;
+    public Optional<Inscricao> buscarPorId(Integer idInscricao) {
+        return repository.findById(idInscricao);
     }
 }

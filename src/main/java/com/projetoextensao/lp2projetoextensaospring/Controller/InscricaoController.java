@@ -2,7 +2,6 @@ package com.projetoextensao.lp2projetoextensaospring.Controller;
 
 import com.projetoextensao.lp2projetoextensaospring.dataTransfer.InscricaoData;
 import com.projetoextensao.lp2projetoextensaospring.entity.Discente;
-import com.projetoextensao.lp2projetoextensaospring.entity.Grupo;
 import com.projetoextensao.lp2projetoextensaospring.entity.Inscricao;
 import com.projetoextensao.lp2projetoextensaospring.entity.StatusInscricao;
 import com.projetoextensao.lp2projetoextensaospring.service.DiscenteService;
@@ -45,7 +44,7 @@ public class InscricaoController {
 
     @PostMapping("/inscrever")
     @ResponseStatus(HttpStatus.CREATED)
-    public Inscricao fazerInscricao(InscricaoData data) {
+    public Inscricao fazerInscricao(@RequestBody InscricaoData data) {
         return inscricaoService.fazerInscricao(data);
     }
 

@@ -33,7 +33,7 @@ public class HistoricoCargo {
         this.grupo = grupo;
         this.cargo = cargo;
         this.dataInicio = LocalDate.now(); // O cargo começa no momento da atribuição
-        this.dataFim = null;
+        this.dataFim = dataInicio.plusDays(30);
     }
 
     public HistoricoCargo(){}
