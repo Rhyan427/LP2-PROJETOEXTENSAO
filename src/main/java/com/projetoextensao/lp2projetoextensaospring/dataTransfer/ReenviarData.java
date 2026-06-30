@@ -4,6 +4,8 @@ public class ReenviarData {
     private String novaDescricao;
     private Integer novasHoras;
 
+    public ReenviarData(){}
+
     public ReenviarData(String novaDescricao, Integer novasHoras) {
         this.novaDescricao = novaDescricao;
         this.novasHoras = novasHoras;
@@ -24,4 +26,6 @@ public class ReenviarData {
     public void setNovasHoras(Integer novasHoras) {
         this.novasHoras = novasHoras;
     }
+
+
 }

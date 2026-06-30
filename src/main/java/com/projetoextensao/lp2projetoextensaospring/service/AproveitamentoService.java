@@ -83,7 +83,6 @@ public class AproveitamentoService {
     public boolean reenviar(Aproveitamento aprov, String novaDescricao, Integer novasHoras) {
         if (aprov == null) return false;
 
-        Aproveitamento aproveitamento = new Aproveitamento();
         if (aprov.getStatus() != StatusAproveitamento.INDEFERIDO) {
             System.out.println("Esta solicitação não está indeferida.");
             return false;
@@ -92,13 +91,13 @@ public class AproveitamentoService {
             System.out.println("O prazo de 5 dias para reenvio foi ultrapassado.");
             return false;
         }
-        aproveitamento.setDescricao(novaDescricao);
-        aproveitamento.setHoras(novasHoras);
-        aproveitamento.setStatus(StatusAproveitamento.PENDENTE);
-        aproveitamento.setMotivo_rejeicao("N/A");
-        aproveitamento.setDataLimiteReenvio(null);
+        aprov.setDescricao(novaDescricao);
+        aprov.setHoras(novasHoras);
+        aprov.setStatus(StatusAproveitamento.PENDENTE);
+        aprov.setMotivo_rejeicao("N/A");
+        aprov.setDataLimiteReenvio(null);
 
-        repository.save(aproveitamento);
+        repository.save(aprov);
         return true;
     }
 

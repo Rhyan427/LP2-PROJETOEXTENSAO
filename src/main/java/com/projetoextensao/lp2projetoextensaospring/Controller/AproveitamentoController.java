@@ -68,7 +68,11 @@ public class AproveitamentoController {
         }
     }
 
-
+    /**
+     *
+     * @param idAproveitamento recebe o id do aproveitamento para reenviar
+     * @param reenviarData recebe a nova descricao e as novas horas em um dto, para que o request body consiga ser lido
+     */
 
     @PatchMapping("/{idAproveitamento}/reenviar")
     @ResponseStatus(HttpStatus.OK)
