@@ -41,6 +41,7 @@ public class TestDataConfig implements CommandLineRunner {
                 c.setSiape("SIAPE-C" + i);
                 c.setDepartamento("Departamento de Matemática");
                 c.setPapel(pCoord);
+                c.setAtivo(true);
                 coordRepo.save(c);
             }
 
@@ -53,6 +54,7 @@ public class TestDataConfig implements CommandLineRunner {
                 d.setSiape("SIAPE-D" + i);
                 d.setDepartamento("Departamento de Computação");
                 d.setPapel(pDocente);
+                d.setAtivo(true);
                 docenteRepo.save(d);
             }
 
@@ -81,6 +83,7 @@ public class TestDataConfig implements CommandLineRunner {
                 d.setMatricula("202500" + i);
                 d.setCurso(curso);
                 d.setPapel(pDiscente);
+                d.setAtivo(true);
                 discRepo.save(d);
             }
 

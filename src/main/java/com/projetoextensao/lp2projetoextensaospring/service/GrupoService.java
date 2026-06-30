@@ -106,7 +106,6 @@ public class GrupoService {
         return historicoCargoRepository.existsByDiscenteAndCargoAndDataFimIsNull(di, CargoGrupo.DIRETOR);
     }
 
-    // 1. Método que o DiscenteView está a tentar chamar para pedir um grupo novo
     public void criarSolicitacao(GrupoData data) {
         // Como não sabemos exatamente onde eles querem guardar os pendentes,
         // você pode adaptar isto depois. Por enquanto, criamos o grupo e marcamos como INATIVO.
