@@ -18,6 +18,9 @@ public class TestDataConfig implements CommandLineRunner {
     @Autowired private OportunidadeRepo oportRepo;
     @Autowired private PapelRepo papelRepo;
     @Autowired private GrupoRepo grupoRepo;
+    @Autowired private DiretorRepo diretorRepo;
+    @Autowired private AproveitamentoRepo aproveitamentoRepo;
+    @Autowired private AvisoRepo avisoRepo;
 
     @Override
     public void run(String... args) throws Exception {
@@ -87,9 +90,7 @@ public class TestDataConfig implements CommandLineRunner {
                 discRepo.save(d);
             }
 
-            //TODO: criar aproveitamentos predefinidos
-
-            // 6. Criar 3 Oportunidades
+            // 6. Criar 3 coordenadores
             var coords = coordRepo.findAll();
             if (!coords.isEmpty()) {
                 for (int i = 1; i <= 3; i++) {
@@ -110,6 +111,66 @@ public class TestDataConfig implements CommandLineRunner {
                     oportRepo.save(o);
                 }
             }
+
+            // 7. Criar 3 Avisos
+            for (int i = 1; i <= 3; i++) {
+                Aviso a = new Aviso();
+                a.setTitulo("Aviso " + i);
+                a.setMensagem("Mensagem do aviso " + i);
+                a.setDataPublicacao(LocalDate.now());
+
+                if(!docentes.isEmpty()){
+                    a.setAutor(docentes.get(i-1));
+                }
+
+                avisoRepo.save(a); // Salvando no banco
+            }
+
+            // 8. Criar 3 Diretores
+            var grupos = grupoRepo.findAll();
+            Grupo grupoDoDiretor = grupos.isEmpty() ? null : grupos.get(0);
+
+            for (int i = 1; i <= 3; i++) {
+                Diretor d = new Diretor();
+
+                d.setNome("Diretor " + i);
+                d.setEmail("diretor" + i + "@ufma.br");
+                d.setSenha("senha123");
+                d.setMatricula("DIR2026" + i);
+                d.setCurso(curso);
+                d.setPapel(pDiretor);
+                d.setAtivo(true);
+
+                if (grupoDoDiretor != null) {
+                    d.setGrupo(grupoDoDiretor);
+                }
+                d.setCargo("Diretor de Projetos " + i);
+                d.setDataInicio(LocalDate.now());
+                d.setDataFim(LocalDate.now().plusYears(1));
+
+                diretorRepo.save(d);
+
+            }
+
+            // 9. Criar 3 Aproveitamentos
+            var discentes = discRepo.findAll();
+
+            for (int i = 1; i <= 3; i++) {
+                Aproveitamento a = new Aproveitamento();
+                a.setDescricao("Aproveitamento " + i);
+                a.setHoras(i * 10);
+                a.setStatus(StatusAproveitamento.PENDENTE);
+
+                a.setInstituicao("UUUFMA");
+                a.setMotivo_rejeicao("N/A");
+
+                if (!discentes.isEmpty() && discentes.size() >= i) {
+                    a.setDiscente(discentes.get(i - 1));
+                }
+
+                aproveitamentoRepo.save(a);
+            }
+
             System.out.println("Dados de teste (Coordenadores, Docentes e Discentes) carregados com sucesso!");
         } else {
             System.out.println("Dados já existentes, pulando carga inicial.");
