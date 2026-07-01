@@ -31,7 +31,6 @@ public class GrupoData {
     @NotBlank(message = "É obrigatório informar o docente responsável")
     private Docente responsavel;
 
-    @NotBlank(message = "O grupo deve ter pelo menos 1 membro")
     private HashMap<String, Discente> membros;
 
     public GrupoData(String nome, String descricao, String email, Docente responsavel, HashMap<String, Discente> membros) {

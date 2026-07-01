@@ -27,16 +27,14 @@ public class InscricaoService {
         }
     }
 
-    public void verInscricoesPorDiscente(Integer idDiscente) {
-        DiscenteService discenteService = new DiscenteService();
-        Discente di = discenteService.buscarPorId(idDiscente)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Discente nao encontrado."));
+    public List<Inscricao> verInscricoesPorDiscente(Discente di) {
         List<Inscricao> inscricoes = repository.findByDiscente(di);
         for (Inscricao ins : inscricoes) {
             if (Objects.equals(ins.getDiscente(), di)) {
                 System.out.printf("- %s %s. Status: %s\n", ins.getOportunidade().getTipo(), ins.getOportunidade().getTitulo(), ins.getStatus());
             }
         }
+        return inscricoes;
     }
 
     public void verInscricoesPendentes() {
@@ -48,10 +46,10 @@ public class InscricaoService {
         }
     }
 
-    public Inscricao fazerInscricao(Discente discente, Oportunidade oportunidade) {
+    public Inscricao fazerInscricao(Discente di, Oportunidade oportunidade) {
+        if (!inscricaoExiste(di, oportunidade) && oportunidade.getStatus() == StatusOportunidade.PUBLICADA) {
+            Inscricao inscricao = new Inscricao(di, oportunidade, StatusInscricao.PENDENTE, LocalDate.now());
 
-        if (!inscricaoExiste(discente, oportunidade) && oportunidade.getStatus() == StatusOportunidade.PUBLICADA) {
-            Inscricao inscricao = new Inscricao(discente, oportunidade, StatusInscricao.PENDENTE, LocalDate.now());
             return repository.save(inscricao);
         }
         return null;

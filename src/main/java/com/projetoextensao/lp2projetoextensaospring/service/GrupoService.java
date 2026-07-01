@@ -44,6 +44,26 @@ public class GrupoService {
         return grupoRepository.save(novo);
     }
 
+    // 1. Método que o DiscenteView está a tentar chamar para pedir um grupo novo
+    public Grupo solicitarGrupo(GrupoData data) {
+        // Como não sabemos exatamente onde eles querem guardar os pendentes,
+        // você pode adaptar isto depois. Por enquanto, criamos o grupo e marcamos como INATIVO.
+        if (!grupoExiste(data.getNome(), data.getEmail()) && data.getResponsavel() != null) {
+            return null;
+        }
+        Grupo novo = new Grupo(
+                data.getNome(),
+                data.getDescricao(),
+                data.getEmail(),
+                data.getResponsavel()
+        );
+
+            // Aqui seria ideal ter um StatusGrupo.PENDENTE, mas como só temos ATIVO e INATIVO:
+        novo.setStatus(StatusGrupo.INATIVO);
+
+        System.out.println("Solicitação do grupo " + data.getNome() + " enviada para avaliação.");
+        return grupoRepository.save(novo);
+    }
 
 
     public boolean adicionarMembros(Discente di, Grupo grupo) {
@@ -107,25 +127,7 @@ public class GrupoService {
         return historicoCargoRepository.existsByDiscenteAndCargoAndDataFimIsNull(di, CargoGrupo.DIRETOR);
     }
 
-    // 1. Método que o DiscenteView está a tentar chamar para pedir um grupo novo
-    public void solicitarGrupo(GrupoData data) {
-        // Como não sabemos exatamente onde eles querem guardar os pendentes,
-        // você pode adaptar isto depois. Por enquanto, criamos o grupo e marcamos como INATIVO.
-        if (!grupoExiste(data.getNome(), data.getEmail()) && data.getResponsavel() != null) {
-            Grupo novo = new Grupo(
-                    data.getNome(),
-                    data.getDescricao(),
-                    data.getEmail(),
-                    data.getResponsavel()
-            );
 
-            // Aqui seria ideal ter um StatusGrupo.PENDENTE, mas como só temos ATIVO e INATIVO:
-            novo.setStatus(StatusGrupo.INATIVO);
-
-            System.out.println("Solicitação do grupo " + data.getNome() + " enviada para avaliação.");
-            grupoRepository.save(novo);
-        }
-    }
 
     public List<Grupo> listarGruposPendentes() {
         return grupoRepository.findByStatus(StatusGrupo.INATIVO);

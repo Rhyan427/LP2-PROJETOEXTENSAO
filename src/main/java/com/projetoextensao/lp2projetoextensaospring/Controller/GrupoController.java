@@ -6,6 +6,7 @@ import com.projetoextensao.lp2projetoextensaospring.service.DiretorService;
 import com.projetoextensao.lp2projetoextensaospring.service.DiscenteService;
 import com.projetoextensao.lp2projetoextensaospring.service.DocenteService;
 import com.projetoextensao.lp2projetoextensaospring.service.GrupoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,19 +28,19 @@ public class GrupoController {
 
     @PostMapping("/criar")
     @ResponseStatus(HttpStatus.CREATED)
-    public Grupo criarGrupo(GrupoData data) {
+    public Grupo criarGrupo(@RequestBody GrupoData data) {
         return grupoService.criarGrupo(data);
     }
 
     @PostMapping("/solicitar")
     @ResponseStatus(HttpStatus.CREATED)
-    public void solicitarGrupo(GrupoData data) {
-        grupoService.solicitarGrupo(data);
+    public Grupo solicitarGrupo(@RequestBody GrupoData data) {
+        return grupoService.solicitarGrupo(data);
     }
 
     @PatchMapping("/{idGrupo}/avaliar_solicitacao")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public boolean avaliarSolicitacao(@PathVariable Integer idGrupo, boolean pass) {
+    public boolean avaliarSolicitacao(@PathVariable Integer idGrupo, @RequestBody Boolean pass) {
         Grupo grupo = grupoService.buscarPorId(idGrupo)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Grupo nao encontrado."));
         return grupoService.avaliarSolicitacao(grupo, pass);
