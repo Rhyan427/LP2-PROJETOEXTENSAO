@@ -171,7 +171,7 @@ public class TestDataConfig implements CommandLineRunner {
                 aproveitamentoRepo.save(a);
             }
 
-            System.out.println("Dados de teste (Coordenadores, Docentes e Discentes) carregados com sucesso!");
+            System.out.println("Dados carregados com sucesso!");
         } else {
             System.out.println("Dados já existentes, pulando carga inicial.");
         }
