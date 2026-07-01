@@ -48,12 +48,10 @@ public class InscricaoService {
         }
     }
 
-    public Inscricao fazerInscricao(InscricaoData data) {
-        Discente di = data.getDiscente();
-        Oportunidade oportunidade = data.getOportunidade();
-        if (!inscricaoExiste(di, oportunidade) && oportunidade.getStatus() == StatusOportunidade.PUBLICADA) {
-            Inscricao inscricao = new Inscricao(di, oportunidade, StatusInscricao.PENDENTE, LocalDate.now());
+    public Inscricao fazerInscricao(Discente discente, Oportunidade oportunidade) {
 
+        if (!inscricaoExiste(discente, oportunidade) && oportunidade.getStatus() == StatusOportunidade.PUBLICADA) {
+            Inscricao inscricao = new Inscricao(discente, oportunidade, StatusInscricao.PENDENTE, LocalDate.now());
             return repository.save(inscricao);
         }
         return null;

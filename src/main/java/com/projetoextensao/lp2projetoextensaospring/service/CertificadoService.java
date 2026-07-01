@@ -2,6 +2,8 @@ package com.projetoextensao.lp2projetoextensaospring.service;
 
 import com.projetoextensao.lp2projetoextensaospring.dataTransfer.CertData;
 import com.projetoextensao.lp2projetoextensaospring.entity.Certificado;
+import com.projetoextensao.lp2projetoextensaospring.entity.Discente;
+import com.projetoextensao.lp2projetoextensaospring.entity.Oportunidade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.projetoextensao.lp2projetoextensaospring.repository.CertificadoRepo;
@@ -14,15 +16,18 @@ public class CertificadoService {
 
     /**
      *
-     * @param data recebe os dados a serem inseridos no novo certificado
-     * @return o novo certificado salvo no banco de dados
+     * @param discente recebe o discente que irá receber o certificado
+     * @param oportunidade recebe a oportunidade em questão
+     * @return o certificado salvo no banco de dados
      */
 
-    public Certificado criarCertificado(CertData data) {
-        Certificado novo = new Certificado(data.getDiscente(),
-                data.getOportunidade(),
-                data.getOportunidade().getCargaHoraria(),
-                "certificadoPath");
+    public Certificado criarCertificado(Discente discente, Oportunidade oportunidade) {
+        Certificado novo = new Certificado(
+                discente,
+                oportunidade,
+                oportunidade.getCargaHoraria(),
+                "certificadoPath"
+        );
         return repository.save(novo);
     }
 
