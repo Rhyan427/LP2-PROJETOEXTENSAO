@@ -64,7 +64,7 @@ public class TestDataConfig implements CommandLineRunner {
             var docentes = docenteRepo.findAll();
             Docente docenteResponsavel = docentes.isEmpty() ? null : docentes.get(0);
 
-
+            //5. Criar 3 grupos
             if (docenteResponsavel != null) {
                 for (int i = 1; i <= 3; i++) {
                     Grupo grupo = new Grupo(
@@ -77,7 +77,7 @@ public class TestDataConfig implements CommandLineRunner {
                 }
             }
 
-            // 5. Criar 3 Discentes
+            // 6. Criar 3 Discentes
             for (int i = 1; i <= 3; i++) {
                 Discente d = new Discente();
                 d.setNome("Aluno " + i);
@@ -90,7 +90,7 @@ public class TestDataConfig implements CommandLineRunner {
                 discRepo.save(d);
             }
 
-            // 6. Criar 3 coordenadores
+            // 7. Criar 3 coordenadores
             var coords = coordRepo.findAll();
             if (!coords.isEmpty()) {
                 for (int i = 1; i <= 3; i++) {
@@ -112,7 +112,7 @@ public class TestDataConfig implements CommandLineRunner {
                 }
             }
 
-            // 7. Criar 3 Avisos
+            // 8. Criar 3 Avisos
             for (int i = 1; i <= 3; i++) {
                 Aviso a = new Aviso();
                 a.setTitulo("Aviso " + i);
@@ -126,7 +126,7 @@ public class TestDataConfig implements CommandLineRunner {
                 avisoRepo.save(a); // Salvando no banco
             }
 
-            // 8. Criar 3 Diretores
+            // 9. Criar 3 Diretores
             var grupos = grupoRepo.findAll();
             Grupo grupoDoDiretor = grupos.isEmpty() ? null : grupos.get(0);
 
@@ -152,7 +152,7 @@ public class TestDataConfig implements CommandLineRunner {
 
             }
 
-            // 9. Criar 3 Aproveitamentos
+            // 10. Criar 3 Aproveitamentos
             var discentes = discRepo.findAll();
 
             for (int i = 1; i <= 3; i++) {
